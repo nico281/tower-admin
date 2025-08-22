@@ -2,7 +2,7 @@ class Company < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :buildings, dependent: :destroy
 
-  enum :plan, [ :basic, :pro, :entreprise ]
+  enum :plan, { basic: "basic", pro: "pro", entreprise: "entreprise" }
 
   validates :name, presence: true
   validates :plan, inclusion: { in: %w[basic pro entreprise] }
