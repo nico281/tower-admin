@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout "admin"
   before_action :require_super_admin!
   before_action :set_user, only: %i[ show edit update destroy ]
 

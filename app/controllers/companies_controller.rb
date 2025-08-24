@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  layout "admin"
   before_action :require_super_admin!
   before_action :set_company, only: %i[ show edit update destroy ]
 

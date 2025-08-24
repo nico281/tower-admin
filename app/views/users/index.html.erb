@@ -1,12 +1,10 @@
 <% content_for :title, "Users" %>
+<% content_for :page_title, "Users" %>
+<% content_for :page_description, "Manage all users in your system" %>
 
-<div class="max-w-6xl mx-auto">
+<div>
   <!-- Header -->
-  <div class="mb-6 flex items-center justify-between">
-    <div class="text-left">
-      <h1 class="text-3xl font-bold text-gray-900">Users</h1>
-      <p class="text-sm text-gray-500 mt-1">Manage all users in your system</p>
-    </div>
+  <div class="mb-6 flex items-center justify-end">
     <div class="flex items-center space-x-3">
       <%= link_to new_user_path, 
           class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>

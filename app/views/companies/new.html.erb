@@ -1,8 +1,10 @@
 <% content_for :title, "New company" %>
+<% content_for :page_title, "New Company" %>
+<% content_for :page_description, "Create a new company in your system" %>
 
-<div class="max-w-2xl mx-auto">
+<div>
   <!-- Header with Back Navigation -->
-  <div class="mb-6 flex items-center justify-between">
+  <div class="mb-6 flex items-center justify-start">
     <div class="flex items-center space-x-4">
       <%= link_to companies_path, 
           class: "inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
@@ -11,10 +13,6 @@
         </svg>
         Back to Companies
       <% end %>
-    </div>
-    <div class="text-right">
-      <h1 class="text-2xl font-bold text-gray-900">New Company</h1>
-      <p class="text-sm text-gray-500 mt-1">Create a new company in your system</p>
     </div>
   </div>
 
