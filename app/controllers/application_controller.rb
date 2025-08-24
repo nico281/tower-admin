@@ -6,14 +6,14 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   def skip_tenant_for_super_admin
-    AxtAsTenant.current_tenant = nil if current_user&.super_admin?
+  ActsAsTenant.current_tenant = nil if request.subdomain == "admin"
   end
 
   def require_super_admin!
-    redirect_to root_path, alert: "Not authorized" unless current_user&.super_admin?
+    redirect_to (request.subdomain == "admin" ? admin_root_path : tenant_root_path), alert: "Not authorized" unless current_user&.super_admin?
   end
 
   def require_company_admin!
-    redirect_to root_path, alert: "Not authorized" unless current_user&.admin?
+    redirect_to (request.subdomain == "admin" ? admin_root_path : tenant_root_path), alert: "Not authorized" unless current_user&.admin?
   end
 end

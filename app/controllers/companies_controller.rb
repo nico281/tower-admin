@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+  before_action :require_super_admin!
   before_action :set_company, only: %i[ show edit update destroy ]
 
   # GET /companies or /companies.json
