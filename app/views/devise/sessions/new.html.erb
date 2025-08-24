@@ -1,0 +1,98 @@
+<div class="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "max-w-md mx-auto" }) do |form| %>
+      <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">
+          <h2 class="text-xl font-semibold text-white">Sign in to your account</h2>
+          <p class="text-indigo-100 text-sm mt-1">Access your dashboard and manage your companies</p>
+        </div>
+
+        <!-- Form Content -->
+        <div class="px-6 py-6 space-y-6">
+          <% if flash[:alert] %>
+            <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-red-700"><%= flash[:alert] %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <% if flash[:notice] %>
+            <div class="rounded-lg border border-green-200 bg-green-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-green-700"><%= flash[:notice] %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <%= form.label :email, class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                </svg>
+              </div>
+              <%= form.email_field :email, 
+                  autocomplete: "email",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter your email address" %>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <%= form.label :password, class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <%= form.password_field :password, 
+                  autocomplete: "current-password",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter your password" %>
+            </div>
+          </div>
+
+          <!-- Remember Me -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <%= form.check_box :remember_me, class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+              <%= form.label :remember_me, class: "ml-2 block text-sm text-gray-700" %>
+            </div>
+            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-sm text-indigo-600 hover:text-indigo-500" %>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+          <div class="text-sm text-gray-500">
+            Don't have an account? Contact your administrator
+          </div>
+          <div class="flex space-x-3">
+            <%= form.submit "Sign in", 
+                class: "inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

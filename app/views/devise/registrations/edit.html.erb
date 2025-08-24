@@ -1,0 +1,165 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "max-w-md mx-auto" }) do |form| %>
+      <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">
+          <h2 class="text-xl font-semibold text-white">Edit your profile</h2>
+          <p class="text-indigo-100 text-sm mt-1">Update your account information</p>
+        </div>
+
+        <!-- Form Content -->
+        <div class="px-6 py-6 space-y-6">
+          <% if resource.errors.any? %>
+            <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">
+                    <%= pluralize(resource.errors.count, "error") %> prevented your profile from being updated:
+                  </h3>
+                  <div class="mt-2 text-sm text-red-700">
+                    <ul class="list-disc list-inside space-y-1">
+                      <% resource.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <%= form.label :email, class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                </svg>
+              </div>
+              <%= form.email_field :email, 
+                  autocomplete: "email",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter your email address" %>
+            </div>
+            <% if resource.errors[:email].any? %>
+              <p class="text-red-600 text-sm flex items-center">
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <%= resource.errors[:email].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <!-- Current Password -->
+          <div class="space-y-2">
+            <%= form.label :current_password, class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <%= form.password_field :current_password, 
+                  autocomplete: "current-password",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter your current password" %>
+            </div>
+            <% if resource.errors[:current_password].any? %>
+              <p class="text-red-600 text-sm flex items-center">
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <%= resource.errors[:current_password].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <!-- New Password -->
+          <div class="space-y-2">
+            <%= form.label :password, "New password (leave blank if you don't want to change it)", class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <%= form.password_field :password, 
+                  autocomplete: "new-password",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter new password (optional)" %>
+            </div>
+            <% if resource.errors[:password].any? %>
+              <p class="text-red-600 text-sm flex items-center">
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <%= resource.errors[:password].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <!-- Password Confirmation -->
+          <div class="space-y-2">
+            <%= form.label :password_confirmation, class: "block text-sm font-semibold text-gray-700" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <%= form.password_field :password_confirmation, 
+                  autocomplete: "new-password",
+                  class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                  placeholder: "Confirm new password" %>
+            </div>
+            <% if resource.errors[:password_confirmation].any? %>
+              <p class="text-red-600 text-sm flex items-center">
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <%= resource.errors[:password_confirmation].first %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+          <div class="text-sm text-gray-500">
+            Want to cancel? 
+            <%= link_to "Back", :back, class: "text-indigo-600 hover:text-indigo-500" %>
+          </div>
+          <div class="flex space-x-3">
+            <%= form.submit "Update profile", 
+                class: "inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Cancel Account Section -->
+    <div class="mt-6 bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 bg-red-50 border-b border-red-200">
+        <h3 class="text-lg font-semibold text-red-800">Cancel my account</h3>
+        <p class="text-red-600 text-sm mt-1">Once you cancel, there is no going back. Please be certain.</p>
+      </div>
+      <div class="px-6 py-4">
+        <p class="text-sm text-gray-600 mb-4">
+          Unhappy? 
+          <%= button_to "Cancel my account", registration_path(resource_name), 
+              data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, 
+              method: :delete,
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out" %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
