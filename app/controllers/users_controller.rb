@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   layout "admin"
   before_action :require_super_admin!
+  before_action :normalize_params, only: [:create, :update]
   before_action :set_user, only: %i[ show edit update destroy ]
   
   before_action :log_action
@@ -19,6 +20,7 @@ class UsersController < ApplicationController
 
   def create
     Rails.logger.debug "CREATE: Current user: #{current_user&.email}, super_admin: #{current_user&.super_admin?}"
+    Rails.logger.debug "Raw params: #{params.inspect}"
     @user = User.new(user_params)
 
     if @user.password.blank?
@@ -70,6 +72,15 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def normalize_params
+    # Handle parameter mapping for admin routes
+    if request.subdomain == 'admin' && params[:admin_user]
+      params[:user] = params[:admin_user]
+      Rails.logger.debug "Normalized admin_user params to user params"
+    end
+    Rails.logger.debug "Params after normalization: #{params[:user]&.keys}"
+  end
 
   def log_action
     Rails.logger.debug "USERS_CONTROLLER: #{action_name} - subdomain: #{request.subdomain}, method: #{request.method}"
