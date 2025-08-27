@@ -120,7 +120,9 @@
           <%= form.select :role, 
               options_for_select(User.roles.map {|key, value| [key.humanize, key]}, user.role), 
               { prompt: "Select a role" },
-              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" %>
+              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+              id: "user_role",
+              onchange: "handleRoleChange()" %>
         </div>
         <% if user.errors[:role].any? %>
           <p class="text-red-600 text-sm flex items-center">
@@ -144,7 +146,8 @@
           <%= form.select :company_id, 
               options_for_select(@companies.map {|c| [c.name, c.id]}, user.company_id), 
               { prompt: "Select a company (optional)" },
-              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" %>
+              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+              id: "user_company_id" %>
         </div>
         <% if user.errors[:company_id].any? %>
           <p class="text-red-600 text-sm flex items-center">
@@ -171,3 +174,37 @@
     </div>
   </div>
 <% end %>
+
+<script>
+  function handleRoleChange() {
+    const roleSelect = document.getElementById('user_role');
+    const companySelect = document.getElementById('user_company_id');
+    const companyContainer = companySelect.closest('.space-y-2');
+    
+    if (roleSelect.value === 'super_admin') {
+      // Clear company selection and disable field
+      companySelect.value = '';
+      companySelect.disabled = true;
+      companyContainer.style.opacity = '0.5';
+      
+      // Update the prompt text
+      const prompt = companySelect.querySelector('option[value=""]');
+      if (prompt) {
+        prompt.textContent = 'Super admins cannot have a company';
+      }
+    } else {
+      // Re-enable company selection
+      companySelect.disabled = false;
+      companyContainer.style.opacity = '1';
+      
+      // Restore original prompt text
+      const prompt = companySelect.querySelector('option[value=""]');
+      if (prompt) {
+        prompt.textContent = 'Select a company (optional)';
+      }
+    }
+  }
+  
+  // Run on page load to handle edit forms
+  document.addEventListener('DOMContentLoaded', handleRoleChange);
+</script>
