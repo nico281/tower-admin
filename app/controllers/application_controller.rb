@@ -16,4 +16,15 @@ class ApplicationController < ActionController::Base
   def require_company_admin!
     redirect_to (request.subdomain == "admin" ? admin_root_path : tenant_root_path), alert: "Not authorized" unless current_user&.admin?
   end
+
+  protected
+
+  def authenticate_user!
+    Rails.logger.debug "AUTH DEBUG: subdomain=#{request.subdomain}, user_signed_in?=#{user_signed_in?}, current_user=#{current_user&.email}"
+    if request.subdomain == "admin"
+      redirect_to new_user_session_path unless user_signed_in?
+    else
+      super
+    end
+  end
 end

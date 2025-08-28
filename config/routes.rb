@@ -5,23 +5,21 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Single Devise configuration for all subdomains
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
   # Admin subdomain routes
   constraints subdomain: "admin" do
     resources :companies
     resources :users
-    devise_for :users, as: :admin, controllers: { sessions: "users/sessions" }
     root "companies#index", as: :admin_root
   end
 
   # Tenant subdomain routes (for company subdomains)
   constraints subdomain: /^(?!admin$).+/ do
-    devise_for :users, as: :tenant, controllers: { sessions: "users/sessions" }
     # Add your tenant-specific routes here
     root "dashboard#index", as: :tenant_root
   end
-
-  # Default routes (no subdomain)
-  devise_for :users, controllers: { sessions: "users/sessions" }
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
