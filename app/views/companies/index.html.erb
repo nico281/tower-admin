@@ -4,8 +4,12 @@
 
 <div>
   <!-- Header -->
-  <div class="mb-6 flex items-center justify-end">
-    <div class="flex items-center space-x-3">
+  <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div class="flex-1">
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 lg:hidden">Companies</h1>
+      <p class="text-sm text-gray-600 lg:hidden mt-1">Manage all companies in your system</p>
+    </div>
+    <div class="flex items-center space-x-3 w-full sm:w-auto">
       <%= link_to new_company_path, 
           class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,10 +41,10 @@
     <% if @companies.any? %>
       <div class="divide-y divide-gray-200">
         <% @companies.each do |company| %>
-          <div class="p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
-            <div class="flex items-center justify-between">
+          <div class="p-4 sm:p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div class="flex-1 min-w-0">
-                <div class="flex items-center space-x-3">
+                <div class="flex items-start sm:items-center space-x-3">
                   <div class="flex-shrink-0">
                     <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
                       <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +56,7 @@
                     <h2 class="text-lg font-semibold text-gray-900 truncate">
                       <%= company.name %>
                     </h2>
-                    <div class="mt-1 flex items-center space-x-4 text-sm text-gray-500">
+                    <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
                       <div class="flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -85,7 +89,7 @@
                   </div>
                 </div>
               </div>
-              <div class="flex items-center space-x-2">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <%= link_to company, 
                     class: "inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-lg shadow-sm hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
