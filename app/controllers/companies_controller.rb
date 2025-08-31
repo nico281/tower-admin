@@ -1,11 +1,20 @@
 class CompaniesController < ApplicationController
+  include Filterable
+
   layout "admin"
   before_action :require_super_admin!
   before_action :set_company, only: %i[ show edit update destroy ]
 
   # GET /companies or /companies.json
   def index
-    @companies = Company.all
+    @companies = filter_and_paginate(Company.all, {
+      search: { term: params[:search], columns: [ :name, :domain ] },
+      enums: { plan: params[:plan] },
+      page: params[:page]
+    })
+
+    # For filter dropdowns
+    @plans = Company.plans.keys
   end
 
   # GET /companies/1 or /companies/1.json

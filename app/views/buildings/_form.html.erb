@@ -1,0 +1,100 @@
+<%= form_with(model: building, local: true, class: "max-w-2xl mx-auto") do |form| %>
+  <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+    <!-- Header -->
+    <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-teal-600">
+      <h2 class="text-xl font-semibold text-white">
+        <%= building.new_record? ? "Create New Building" : "Edit Building" %>
+      </h2>
+      <p class="text-blue-100 text-sm mt-1">
+        <%= building.new_record? ? "Add a new building to your portfolio" : "Update building information" %>
+      </p>
+    </div>
+
+    <!-- Form Content -->
+    <div class="px-4 sm:px-6 py-6 space-y-6">
+      <% if building.errors.any? %>
+        <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                <%= pluralize(building.errors.count, "error") %> prevented this building from being saved:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc list-inside space-y-1">
+                  <% building.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Name -->
+      <div class="space-y-2">
+        <%= form.label :name, class: "block text-sm font-semibold text-gray-700" %>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <%= form.text_field :name, 
+              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+              placeholder: "Enter building name" %>
+        </div>
+        <% if building.errors[:name].any? %>
+          <p class="text-red-600 text-sm flex items-center">
+            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <%= building.errors[:name].first %>
+          </p>
+        <% end %>
+      </div>
+
+      <!-- Address -->
+      <div class="space-y-2">
+        <%= form.label :address, class: "block text-sm font-semibold text-gray-700" %>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <%= form.text_field :address, 
+              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+              placeholder: "Enter building address" %>
+        </div>
+        <% if building.errors[:address].any? %>
+          <p class="text-red-600 text-sm flex items-center">
+            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <%= building.errors[:address].first %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="text-sm text-gray-500 order-2 sm:order-1">
+        <%= building.new_record? ? "All fields are required" : "Update building information" %>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 order-1 sm:order-2">
+        <%= link_to "Cancel", buildings_path, 
+            class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+        <%= form.submit building.new_record? ? "Create Building" : "Update Building", 
+            class: "inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+      </div>
+    </div>
+  </div>
+<% end %>

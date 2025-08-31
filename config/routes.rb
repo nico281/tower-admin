@@ -11,14 +11,20 @@ Rails.application.routes.draw do
   # Admin subdomain routes
   constraints subdomain: "admin" do
     resources :companies
-    resources :users
+    resources :users, path: 'manage_users'
     root "companies#index", as: :admin_root
   end
 
   # Tenant subdomain routes (for company subdomains)
   constraints subdomain: /^(?!admin$).+/ do
-    # Add your tenant-specific routes here
     root "dashboard#index", as: :tenant_root
+    
+    resources :buildings
+    resources :apartments
+    resources :tenant_users, path: 'users', as: 'tenant_users'
+    
+    # Dashboard route
+    get 'dashboard', to: 'dashboard#index'
   end
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)

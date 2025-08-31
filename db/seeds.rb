@@ -7,3 +7,13 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Create default super admin user
+User.find_or_create_by!(email: 'admin@tower.com') do |user|
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+  user.role = :super_admin
+  user.company = nil
+end
+
+puts "Created super admin user with email: admin@tower.com"

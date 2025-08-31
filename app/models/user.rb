@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validate :super_admin_cannot_have_company
 
   def super_admin?
-    role == 'super_admin'
+    role == "super_admin"
   end
 
   private

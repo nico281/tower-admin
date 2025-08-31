@@ -10,7 +10,13 @@ class ApplicationController < ActionController::Base
   end
 
   def require_super_admin!
-    redirect_to (request.subdomain == "admin" ? admin_root_path : tenant_root_path), alert: "Not authorized" unless current_user&.super_admin?
+    unless current_user&.super_admin?
+      if request.subdomain == "admin"
+        redirect_to new_user_session_path, alert: "Access denied. Super admin privileges required."
+      else
+        redirect_to tenant_root_path, alert: "Not authorized"
+      end
+    end
   end
 
   def require_company_admin!

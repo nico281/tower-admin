@@ -1,13 +1,24 @@
 class UsersController < ApplicationController
+  include Filterable
+
   layout "admin"
   before_action :require_super_admin!
-  before_action :normalize_params, only: [:create, :update]
+  before_action :normalize_params, only: [ :create, :update ]
   before_action :set_user, only: %i[ show edit update destroy ]
-  
+
   before_action :log_action
 
   def index
-    @users = User.all
+    @users = filter_and_paginate(User.all, {
+      search: { term: params[:search], columns: [ :email ] },
+      enums: { role: params[:role] },
+      associations: { company_id: params[:company_id] },
+      page: params[:page]
+    })
+
+    # For filter dropdowns
+    @companies = Company.all
+    @roles = User.roles.keys
   end
 
   def show
@@ -75,7 +86,7 @@ class UsersController < ApplicationController
 
   def normalize_params
     # Handle parameter mapping for admin routes
-    if request.subdomain == 'admin' && params[:admin_user]
+    if request.subdomain == "admin" && params[:admin_user]
       params[:user] = params[:admin_user]
       Rails.logger.debug "Normalized admin_user params to user params"
     end

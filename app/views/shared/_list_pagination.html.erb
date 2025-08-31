@@ -1,0 +1,44 @@
+<%# 
+  Reusable pagination component for lists
+  
+  Usage:
+  <%= render 'shared/list_pagination', 
+      collection: @users,
+      path: users_path,
+      filter_params: { search: params[:search], role: params[:role] },
+      item_name: "users" %>
+%>
+
+<div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
+  <div class="flex items-center justify-between">
+    <div class="text-sm text-gray-700">
+      Showing <%= collection.offset_value + 1 %>-<%= [collection.offset_value + collection.limit_value, collection.total_count].min %> of <%= collection.total_count %> <%= item_name %>
+    </div>
+    <div class="flex items-center space-x-1">
+      <% if collection.prev_page %>
+        <%= link_to "Previous", path.call(filter_params.merge(page: collection.prev_page)), 
+            class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
+      <% else %>
+        <span class="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-l-lg cursor-not-allowed">Previous</span>
+      <% end %>
+      
+      <% ([collection.current_page - 2, 1].max..[collection.current_page + 2, collection.total_pages].min).each do |page| %>
+        <% if page == collection.current_page %>
+          <span class="px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-300">
+            <%= page %>
+          </span>
+        <% else %>
+          <%= link_to page, path.call(filter_params.merge(page: page)),
+              class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
+        <% end %>
+      <% end %>
+      
+      <% if collection.next_page %>
+        <%= link_to "Next", path.call(filter_params.merge(page: collection.next_page)),
+            class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
+      <% else %>
+        <span class="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-r-lg cursor-not-allowed">Next</span>
+      <% end %>
+    </div>
+  </div>
+</div>
