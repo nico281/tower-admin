@@ -23,18 +23,10 @@
   </head>
 
   <body class="bg-gray-50">
-    <!-- Mobile menu button -->
-    <div class="lg:hidden fixed top-0 left-0 z-50 p-4">
-      <button id="mobile-menu-button" class="text-white bg-blue-900 p-2 rounded-md shadow-lg">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </div>
 
     <div class="flex h-screen">
       <!-- Sidebar -->
-      <nav id="sidebar" class="fixed lg:relative lg:translate-x-0 transform -translate-x-full lg:w-64 w-64 bg-gradient-to-b from-blue-900 via-blue-800 to-teal-900 shadow-xl z-40 transition-transform duration-300 ease-in-out">
+      <nav id="sidebar" class="fixed lg:relative lg:translate-x-0 transform -translate-x-full lg:w-64 w-64 h-full bg-gradient-to-b from-blue-900 via-blue-800 to-teal-900 shadow-xl z-40 transition-transform duration-300 ease-in-out">
         <!-- Logo/Header -->
         <div class="px-6 py-8">
           <div class="flex items-center space-x-3">
@@ -147,17 +139,30 @@
       <main class="flex-1 overflow-auto">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200">
-          <div class="flex items-center justify-between px-6 py-4">
-            <div class="flex-1">
-              <h1 class="text-2xl font-bold text-gray-900 hidden lg:block">
-                <%= content_for?(:page_title) ? yield(:page_title) : "Dashboard" %>
-              </h1>
-              <% if content_for?(:page_description) %>
-                <p class="text-sm text-gray-600 mt-1 hidden lg:block">
-                  <%= yield :page_description %>
-                </p>
-              <% end %>
+          <div class="flex items-center justify-between px-4 sm:px-6 py-4">
+            <!-- Mobile menu button and title -->
+            <div class="flex items-center space-x-3 flex-1">
+              <!-- Mobile menu button -->
+              <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              
+              <!-- Page title -->
+              <div class="flex-1">
+                <h1 class="text-xl lg:text-2xl font-bold text-gray-900">
+                  <%= content_for?(:page_title) ? yield(:page_title) : "Dashboard" %>
+                </h1>
+                <% if content_for?(:page_description) %>
+                  <p class="text-sm text-gray-600 mt-1 hidden lg:block">
+                    <%= yield :page_description %>
+                  </p>
+                <% end %>
+              </div>
             </div>
+            
+            <!-- Company info -->
             <div class="flex items-center space-x-4">
               <div class="hidden sm:flex items-center space-x-2 text-sm text-gray-500">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,29 +182,62 @@
     </div>
 
     <!-- Mobile menu overlay -->
-    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden hidden"></div>
+    <div id="mobile-overlay" class="fixed inset-0 z-30 lg:hidden opacity-0 pointer-events-none"></div>
 
     <script>
-      // Mobile menu toggle
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('mobile-overlay');
-
+      let mobileMenuInitialized = false;
+      
       function toggleMobileMenu() {
-        sidebar.classList.toggle('-translate-x-full');
-        overlay.classList.toggle('hidden');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+        
+        if (sidebar && overlay) {
+          sidebar.classList.toggle('-translate-x-full');
+          overlay.classList.toggle('opacity-0');
+          overlay.classList.toggle('pointer-events-none');
+        }
       }
 
-      mobileMenuButton?.addEventListener('click', toggleMobileMenu);
-      overlay?.addEventListener('click', toggleMobileMenu);
+      function initializeMobileMenu() {
+        if (mobileMenuInitialized) return;
+        
+        // Use event delegation for mobile menu button
+        document.addEventListener('click', function(e) {
+          if (e.target.closest('#mobile-menu-button')) {
+            e.preventDefault();
+            toggleMobileMenu();
+          }
+          
+          if (e.target.closest('#mobile-overlay')) {
+            toggleMobileMenu();
+          }
+        });
 
-      // Close mobile menu on window resize
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 1024) {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.add('hidden');
-        }
-      });
+        // Close mobile menu on window resize
+        window.addEventListener('resize', () => {
+          const sidebar = document.getElementById('sidebar');
+          const overlay = document.getElementById('mobile-overlay');
+          
+          if (sidebar && overlay) {
+            if (window.innerWidth >= 1024) {
+              // Desktop: ensure sidebar is visible and overlay is hidden
+              sidebar.classList.remove('-translate-x-full');
+              overlay.classList.add('opacity-0');
+              overlay.classList.add('pointer-events-none');
+            } else {
+              // Mobile: ensure sidebar is hidden and overlay is hidden
+              sidebar.classList.add('-translate-x-full');
+              overlay.classList.add('opacity-0');
+              overlay.classList.add('pointer-events-none');
+            }
+          }
+        });
+        
+        mobileMenuInitialized = true;
+      }
+
+      // Initialize once
+      document.addEventListener('DOMContentLoaded', initializeMobileMenu);
     </script>
   </body>
 </html>
