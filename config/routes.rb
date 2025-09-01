@@ -21,7 +21,18 @@ Rails.application.routes.draw do
     
     resources :buildings
     resources :apartments
-    resources :tenant_users, path: 'users', as: 'tenant_users'
+    
+    # User management with custom path to avoid Devise conflicts
+    scope 'users' do
+      get '/', to: 'tenant_users#index', as: :tenant_users
+      get '/new', to: 'tenant_users#new', as: :new_tenant_user
+      post '/', to: 'tenant_users#create'
+      get '/:id/edit', to: 'tenant_users#edit', as: :edit_tenant_user
+      patch '/:id', to: 'tenant_users#update', as: :tenant_user
+      put '/:id', to: 'tenant_users#update'
+      delete '/:id', to: 'tenant_users#destroy'
+      get '/:id', to: 'tenant_users#show', constraints: { id: /\d+/ }
+    end
     
     # Dashboard route
     get 'dashboard', to: 'dashboard#index'
