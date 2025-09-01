@@ -5,5 +5,5 @@ class Resident < ApplicationRecord
   belongs_to :company
   has_many :payments, dependent: :destroy
 
-  ovalidates :email, presence: true
+  validates :email, presence: true
 end
