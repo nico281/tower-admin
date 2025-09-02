@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     
     resources :buildings
     resources :apartments
+    resources :residents
     
     # User management with custom path to avoid Devise conflicts
     scope 'users' do

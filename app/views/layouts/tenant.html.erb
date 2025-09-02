@@ -88,6 +88,20 @@
               <% end %>
             <% end %>
 
+            <!-- Residents -->
+            <%= link_to residents_path, 
+                class: "#{request.path.starts_with?('/residents') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+              <svg class="#{request.path.starts_with?('/residents') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Residents
+              <% if request.path.starts_with?('/residents') %>
+                <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              <% end %>
+            <% end %>
+
             <!-- Users -->
             <% users_active = request.path.starts_with?('/users') && !request.path.starts_with?('/users/sign') %>
             <%= link_to tenant_users_path, 
@@ -186,59 +200,66 @@
     <div id="mobile-overlay" class="fixed inset-0 z-30 lg:hidden opacity-0 pointer-events-none"></div>
 
     <script>
-      let mobileMenuInitialized = false;
-      
-      function toggleMobileMenu() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobile-overlay');
+      (function() {
+        // Check if already initialized to prevent conflicts
+        if (window.mobileMenuInitialized) return;
+        window.mobileMenuInitialized = true;
         
-        if (sidebar && overlay) {
-          sidebar.classList.toggle('-translate-x-full');
-          overlay.classList.toggle('opacity-0');
-          overlay.classList.toggle('pointer-events-none');
-        }
-      }
-
-      function initializeMobileMenu() {
-        if (mobileMenuInitialized) return;
-        
-        // Use event delegation for mobile menu button
-        document.addEventListener('click', function(e) {
-          if (e.target.closest('#mobile-menu-button')) {
-            e.preventDefault();
-            toggleMobileMenu();
-          }
-          
-          if (e.target.closest('#mobile-overlay')) {
-            toggleMobileMenu();
-          }
-        });
-
-        // Close mobile menu on window resize
-        window.addEventListener('resize', () => {
+        function toggleMobileMenu() {
           const sidebar = document.getElementById('sidebar');
           const overlay = document.getElementById('mobile-overlay');
           
           if (sidebar && overlay) {
-            if (window.innerWidth >= 1024) {
-              // Desktop: ensure sidebar is visible and overlay is hidden
-              sidebar.classList.remove('-translate-x-full');
-              overlay.classList.add('opacity-0');
-              overlay.classList.add('pointer-events-none');
-            } else {
-              // Mobile: ensure sidebar is hidden and overlay is hidden
-              sidebar.classList.add('-translate-x-full');
-              overlay.classList.add('opacity-0');
-              overlay.classList.add('pointer-events-none');
-            }
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('opacity-0');
+            overlay.classList.toggle('pointer-events-none');
           }
-        });
-        
-        mobileMenuInitialized = true;
-      }
+        }
 
-      // Initialize once
-      document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+        function initializeMobileMenu() {
+          // Use event delegation for mobile menu button
+          document.addEventListener('click', function(e) {
+            if (e.target.closest('#mobile-menu-button')) {
+              e.preventDefault();
+              toggleMobileMenu();
+            }
+            
+            if (e.target.closest('#mobile-overlay')) {
+              toggleMobileMenu();
+            }
+          });
+
+          // Close mobile menu on window resize
+          window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (sidebar && overlay) {
+              if (window.innerWidth >= 1024) {
+                // Desktop: ensure sidebar is visible and overlay is hidden
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                overlay.classList.add('pointer-events-none');
+              } else {
+                // Mobile: ensure sidebar is hidden and overlay is hidden
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                overlay.classList.add('pointer-events-none');
+              }
+            }
+          });
+        }
+
+        // Initialize for both DOMContentLoaded and Turbo navigation
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+        } else {
+          initializeMobileMenu();
+        }
+        
+        // Handle Turbo navigation
+        document.addEventListener('turbo:load', initializeMobileMenu);
+      })();
     </script>
   </body>
 </html>

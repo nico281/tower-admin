@@ -59,6 +59,81 @@
         <% end %>
       </div>
 
+      <!-- Floor and Size -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Floor -->
+        <div class="space-y-2">
+          <%= form.label :floor, class: "block text-sm font-semibold text-gray-700" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              </svg>
+            </div>
+            <%= form.number_field :floor, 
+                class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+                placeholder: "Floor number" %>
+          </div>
+        </div>
+
+        <!-- Size -->
+        <div class="space-y-2">
+          <%= form.label :size, "Size (sq ft)", class: "block text-sm font-semibold text-gray-700" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            </div>
+            <%= form.number_field :size, step: :any,
+                class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+                placeholder: "Size in square feet" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bedrooms and Bathrooms -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Bedrooms -->
+        <div class="space-y-2">
+          <%= form.label :bedrooms, class: "block text-sm font-semibold text-gray-700" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+              </svg>
+            </div>
+            <%= form.number_field :bedrooms, 
+                class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+                placeholder: "Number of bedrooms" %>
+          </div>
+        </div>
+
+        <!-- Bathrooms -->
+        <div class="space-y-2">
+          <%= form.label :bathrooms, class: "block text-sm font-semibold text-gray-700" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M9 7l3-3 3 3M4 10h16v11H4V10z" />
+              </svg>
+            </div>
+            <%= form.number_field :bathrooms, step: 0.5,
+                class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+                placeholder: "Number of bathrooms" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-2">
+        <%= form.label :description, class: "block text-sm font-semibold text-gray-700" %>
+        <%= form.text_area :description, 
+            rows: 3,
+            class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+            placeholder: "Additional details about the apartment..." %>
+      </div>
+
       <!-- Building -->
       <div class="space-y-2">
         <%= form.label :building_id, "Building", class: "block text-sm font-semibold text-gray-700" %>

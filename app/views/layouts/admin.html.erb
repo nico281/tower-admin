@@ -152,59 +152,66 @@
       </div>
     </div>
     <script>
-      let mobileMenuInitialized = false;
-      
-      function toggleMobileMenu() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('mobile-overlay');
+      (function() {
+        // Check if already initialized to prevent conflicts  
+        if (window.adminMobileMenuInitialized) return;
+        window.adminMobileMenuInitialized = true;
         
-        if (sidebar && overlay) {
-          sidebar.classList.toggle('-translate-x-full');
-          overlay.classList.toggle('opacity-0');
-          overlay.classList.toggle('pointer-events-none');
-        }
-      }
-
-      function initializeMobileMenu() {
-        if (mobileMenuInitialized) return;
-        
-        // Use event delegation for mobile menu button
-        document.addEventListener('click', function(e) {
-          if (e.target.closest('#mobile-menu-button')) {
-            e.preventDefault();
-            toggleMobileMenu();
-          }
-          
-          if (e.target.closest('#mobile-overlay')) {
-            toggleMobileMenu();
-          }
-        });
-
-        // Close mobile menu on window resize
-        window.addEventListener('resize', () => {
+        function toggleMobileMenu() {
           const sidebar = document.getElementById('sidebar');
           const overlay = document.getElementById('mobile-overlay');
           
           if (sidebar && overlay) {
-            if (window.innerWidth >= 1024) {
-              // Desktop: ensure sidebar is visible and overlay is hidden
-              sidebar.classList.remove('-translate-x-full');
-              overlay.classList.add('opacity-0');
-              overlay.classList.add('pointer-events-none');
-            } else {
-              // Mobile: ensure sidebar is hidden and overlay is hidden
-              sidebar.classList.add('-translate-x-full');
-              overlay.classList.add('opacity-0');
-              overlay.classList.add('pointer-events-none');
-            }
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('opacity-0');
+            overlay.classList.toggle('pointer-events-none');
           }
-        });
-        
-        mobileMenuInitialized = true;
-      }
+        }
 
-      // Initialize once
-      document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+        function initializeMobileMenu() {
+          // Use event delegation for mobile menu button
+          document.addEventListener('click', function(e) {
+            if (e.target.closest('#mobile-menu-button')) {
+              e.preventDefault();
+              toggleMobileMenu();
+            }
+            
+            if (e.target.closest('#mobile-overlay')) {
+              toggleMobileMenu();
+            }
+          });
+
+          // Close mobile menu on window resize
+          window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (sidebar && overlay) {
+              if (window.innerWidth >= 1024) {
+                // Desktop: ensure sidebar is visible and overlay is hidden
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                overlay.classList.add('pointer-events-none');
+              } else {
+                // Mobile: ensure sidebar is hidden and overlay is hidden
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                overlay.classList.add('pointer-events-none');
+              }
+            }
+          });
+        }
+
+        // Initialize for both DOMContentLoaded and Turbo navigation
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+        } else {
+          initializeMobileMenu();
+        }
+        
+        // Handle Turbo navigation  
+        document.addEventListener('turbo:load', initializeMobileMenu);
+      })();
     </script>
   </body>
 </html>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_21_174746) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_02_033341) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_174746) do
     t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "floor"
+    t.integer "bedrooms"
+    t.integer "bathrooms"
+    t.decimal "size"
+    t.text "description"
     t.index ["building_id"], name: "index_apartments_on_building_id"
     t.index ["company_id"], name: "index_apartments_on_company_id"
   end
@@ -45,7 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_174746) do
 
   create_table "payments", force: :cascade do |t|
     t.decimal "amount"
-    t.integer "status"
+    t.integer "payment_status"
     t.bigint "resident_id", null: false
     t.bigint "building_id", null: false
     t.bigint "company_id", null: false
@@ -57,12 +62,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_174746) do
   end
 
   create_table "residents", force: :cascade do |t|
-    t.string "name"
     t.string "email"
     t.bigint "apartment_id", null: false
     t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.date "date_of_birth"
+    t.string "emergency_contact"
+    t.text "notes"
     t.index ["apartment_id"], name: "index_residents_on_apartment_id"
     t.index ["company_id"], name: "index_residents_on_company_id"
   end
