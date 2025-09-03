@@ -23,7 +23,6 @@ class BuildingsController < ApplicationController
   def create
     @building = Building.new(building_params)
     @building.company = ActsAsTenant.current_tenant
-
     respond_to do |format|
       if @building.save
         format.html { redirect_to @building, notice: "Building was successfully created." }
@@ -69,3 +68,4 @@ class BuildingsController < ApplicationController
     params.expect(building: [ :name, :address, :floors, :description ])
   end
 end
+

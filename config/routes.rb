@@ -11,32 +11,32 @@ Rails.application.routes.draw do
   # Admin subdomain routes
   constraints subdomain: "admin" do
     resources :companies
-    resources :users, path: 'manage_users'
+    resources :users, path: "manage_users"
     root "companies#index", as: :admin_root
   end
 
   # Tenant subdomain routes (for company subdomains)
   constraints subdomain: /^(?!admin$).+/ do
     root "dashboard#index", as: :tenant_root
-    
+
     resources :buildings
     resources :apartments
     resources :residents
-    
+
     # User management with custom path to avoid Devise conflicts
-    scope 'users' do
-      get '/', to: 'tenant_users#index', as: :tenant_users
-      get '/new', to: 'tenant_users#new', as: :new_tenant_user
-      post '/', to: 'tenant_users#create'
-      get '/:id/edit', to: 'tenant_users#edit', as: :edit_tenant_user
-      patch '/:id', to: 'tenant_users#update', as: :tenant_user
-      put '/:id', to: 'tenant_users#update'
-      delete '/:id', to: 'tenant_users#destroy'
-      get '/:id', to: 'tenant_users#show', constraints: { id: /\d+/ }
+    scope "users" do
+      get "/", to: "tenant_users#index", as: :tenant_users
+      get "/new", to: "tenant_users#new", as: :new_tenant_user
+      post "/", to: "tenant_users#create"
+      get "/:id/edit", to: "tenant_users#edit", as: :edit_tenant_user
+      patch "/:id", to: "tenant_users#update", as: :tenant_user
+      put "/:id", to: "tenant_users#update"
+      delete "/:id", to: "tenant_users#destroy"
+      get "/:id", to: "tenant_users#show", constraints: { id: /\d+/ }
     end
-    
+
     # Dashboard route
-    get 'dashboard', to: 'dashboard#index'
+    get "dashboard", to: "dashboard#index"
   end
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
