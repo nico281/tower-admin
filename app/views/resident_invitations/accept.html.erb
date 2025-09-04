@@ -1,0 +1,137 @@
+<div class="flex-1 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <% if @resident %>
+      <%= form_with model: @user, url: accept_resident_invitation_path(token: params[:token]), local: true, html: { class: "max-w-md mx-auto" } do |form| %>
+        <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+          <!-- Header -->
+          <div class="px-6 py-4 bg-gradient-to-r from-green-600 to-blue-600">
+            <h2 class="text-xl font-semibold text-white">¡Bienvenido!</h2>
+            <p class="text-green-100 text-sm mt-1">Completa tu registro para acceder al sistema</p>
+          </div>
+
+          <!-- Resident Info -->
+          <div class="px-6 py-4 bg-blue-50 border-b border-gray-200">
+            <h3 class="text-sm font-semibold text-blue-900 mb-3">Tu información:</h3>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <span class="text-blue-600 font-medium">Nombre:</span>
+                <p class="text-blue-800"><%= @resident.display_name %></p>
+              </div>
+              <div>
+                <span class="text-blue-600 font-medium">Apartamento:</span>
+                <p class="text-blue-800"><%= @resident.apartment.number %></p>
+              </div>
+              <div class="col-span-2">
+                <span class="text-blue-600 font-medium">Edificio:</span>
+                <p class="text-blue-800"><%= @resident.building.name %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Content -->
+          <div class="px-6 py-6 space-y-6">
+            <% if @user&.errors&.any? %>
+              <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Hay algunos errores:</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                      <ul class="list-disc list-inside space-y-1">
+                        <% @user.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Email -->
+            <div class="space-y-2">
+              <%= form.label :email, class: "block text-sm font-semibold text-gray-700" %>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                  </svg>
+                </div>
+                <%= form.email_field :email, 
+                    readonly: true,
+                    class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-700 focus:outline-none transition duration-150 ease-in-out" %>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="space-y-2">
+              <%= form.label :password, "Contraseña", class: "block text-sm font-semibold text-gray-700" %>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <%= form.password_field :password, 
+                    required: true,
+                    class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                    placeholder: "Ingresa tu contraseña" %>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="space-y-2">
+              <%= form.label :password_confirmation, "Confirmar contraseña", class: "block text-sm font-semibold text-gray-700" %>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <%= form.password_field :password_confirmation, 
+                    required: true,
+                    class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out",
+                    placeholder: "Confirma tu contraseña" %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div class="text-sm text-gray-500">
+              ¿Tienes problemas? Contacta al administrador
+            </div>
+            <div class="flex space-x-3">
+              <%= form.submit "Crear mi cuenta", 
+                  class: "inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-red-600 to-pink-600">
+          <h2 class="text-xl font-semibold text-white">Error de invitación</h2>
+        </div>
+        <div class="px-6 py-6">
+          <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">Invitación inválida o expirada. Por favor contacta al administrador para obtener una nueva invitación.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

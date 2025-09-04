@@ -6,14 +6,14 @@ class TenantUsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
-    @users = filter_and_paginate(User.where.not(role: 'super_admin'), {
+    @users = filter_and_paginate(User.where.not(role: "super_admin"), {
       search: { term: params[:search], columns: [ :email ] },
       enums: { role: params[:role] },
       page: params[:page]
     })
 
     # For filter dropdowns
-    @roles = User.roles.keys.reject { |role| role == 'super_admin' }
+    @roles = User.roles.keys.reject { |role| role == "super_admin" }
   end
 
   def show

@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  get "resident_invitations/accept"
+
+  # Resident invitations (accessible from any subdomain)
+  get "residents/accept_invitation", to: "resident_invitations#accept", as: :accept_resident_invitation
+  post "residents/accept_invitation", to: "resident_invitations#create_account"
+
+  # Email preview in development
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -21,7 +30,11 @@ Rails.application.routes.draw do
 
     resources :buildings
     resources :apartments
-    resources :residents
+    resources :residents do
+      member do
+        post :invite
+      end
+    end
 
     # User management with custom path to avoid Devise conflicts
     scope "users" do

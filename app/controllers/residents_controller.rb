@@ -3,30 +3,30 @@ class ResidentsController < ApplicationController
 
   layout "tenant"
   before_action :require_company_admin!
-  before_action :set_resident, only: %i[ show edit update destroy ]
+  before_action :set_resident, only: %i[ show edit update destroy invite ]
 
   def index
     @residents = Resident.includes(apartment: :building)
-    
+
     # Apply search filter
     if params[:search].present?
-      @residents = @residents.where("email ILIKE ? OR first_name ILIKE ? OR last_name ILIKE ? OR phone ILIKE ?", 
+      @residents = @residents.where("email ILIKE ? OR first_name ILIKE ? OR last_name ILIKE ? OR phone ILIKE ?",
                                     "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
     end
-    
+
     # Apply apartment filter
     if params[:apartment_id].present?
       @residents = @residents.where(apartment_id: params[:apartment_id])
     end
-    
+
     # Apply building filter (through apartments)
     if params[:building_id].present?
       @residents = @residents.joins(:apartment).where(apartments: { building_id: params[:building_id] })
     end
-    
+
     # Apply pagination
     @residents = @residents.page(params[:page])
-    
+
     # For filter dropdowns
     @apartments = Apartment.includes(:building).all
     @buildings = Building.all
@@ -82,6 +82,23 @@ class ResidentsController < ApplicationController
       format.html { redirect_to residents_path, notice: "Resident was successfully deleted.", status: :see_other }
       format.json { head :no_content }
     end
+  end
+
+  def invite
+    if @resident.user.present?
+      redirect_to @resident, alert: "El residente ya tiene una cuenta creada."
+      return
+    end
+
+    if @resident.invitation_pending?
+      redirect_to @resident, alert: "El residente ya tiene una invitación pendiente."
+      return
+    end
+
+    @resident.generate_invitation_token!
+    ResidentMailer.invitation(@resident).deliver_now
+
+    redirect_to @resident, notice: "Invitación enviada exitosamente a #{@resident.email}"
   end
 
   private

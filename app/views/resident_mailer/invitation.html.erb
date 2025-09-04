@@ -1,0 +1,24 @@
+<h1>¡Hola <%= @resident.display_name %>!</h1>
+
+<p>Has sido invitado a acceder al sistema de gestión de <strong><%= @company.name %></strong>.</p>
+
+<p>Como residente del edificio <strong><%= @building.name %></strong>, apartamento <strong><%= @resident.apartment.number %></strong>, ahora puedes:</p>
+
+<ul>
+  <li>Ver notificaciones importantes del edificio</li>
+  <li>Recibir actualizaciones sobre pagos y servicios</li>
+  <li>Mantenerte informado sobre eventos y noticias</li>
+  <li>Actualizar tu información de contacto</li>
+</ul>
+
+<p>Para acceder al sistema, haz clic en el siguiente enlace:</p>
+
+<p><%= link_to "Crear mi cuenta", @invitation_url, style: "background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;" %></p>
+
+<p>Si no puedes hacer clic en el enlace, copia y pega esta dirección en tu navegador:</p>
+<p><%= @invitation_url %></p>
+
+<p>Esta invitación es válida y segura. Si tienes alguna pregunta, contacta con la administración del edificio.</p>
+
+<p>Saludos,<br>
+<%= @company.name %></p>

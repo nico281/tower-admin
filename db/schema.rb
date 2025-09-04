@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_02_033341) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_04_011128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,8 +73,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_033341) do
     t.date "date_of_birth"
     t.string "emergency_contact"
     t.text "notes"
+    t.datetime "invited_at"
+    t.string "invitation_token"
+    t.datetime "invitation_accepted_at"
     t.index ["apartment_id"], name: "index_residents_on_apartment_id"
     t.index ["company_id"], name: "index_residents_on_company_id"
+    t.index ["invitation_token"], name: "index_residents_on_invitation_token", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -88,9 +92,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_033341) do
     t.boolean "super_admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "resident_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["resident_id"], name: "index_users_on_resident_id"
   end
 
   add_foreign_key "apartments", "buildings"
@@ -101,4 +107,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_033341) do
   add_foreign_key "payments", "residents"
   add_foreign_key "residents", "apartments"
   add_foreign_key "residents", "companies"
+  add_foreign_key "users", "residents"
 end

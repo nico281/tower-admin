@@ -1,0 +1,18 @@
+¡Hola <%= @resident.display_name %>!
+
+Has sido invitado a acceder al sistema de gestión de <%= @company.name %>.
+
+Como residente del edificio <%= @building.name %>, apartamento <%= @resident.apartment.number %>, ahora puedes:
+
+- Ver notificaciones importantes del edificio
+- Recibir actualizaciones sobre pagos y servicios  
+- Mantenerte informado sobre eventos y noticias
+- Actualizar tu información de contacto
+
+Para acceder al sistema, visita este enlace:
+<%= @invitation_url %>
+
+Esta invitación es válida y segura. Si tienes alguna pregunta, contacta con la administración del edificio.
+
+Saludos,
+<%= @company.name %>

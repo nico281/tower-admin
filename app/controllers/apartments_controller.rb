@@ -11,7 +11,7 @@ class ApartmentsController < ApplicationController
       associations: { building_id: params[:building_id] },
       page: params[:page]
     })
-    
+
     # For filter dropdowns
     @buildings = Building.all
   end

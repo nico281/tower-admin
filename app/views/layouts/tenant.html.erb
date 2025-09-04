@@ -37,7 +37,13 @@
             </div>
             <div>
               <h1 class="text-white text-xl font-bold"><%= ActsAsTenant.current_tenant&.name || 'Company' %></h1>
-              <p class="text-blue-200 text-sm">Management Dashboard</p>
+              <p class="text-blue-200 text-sm">
+                <% if current_user&.resident? %>
+                  Portal de Residente
+                <% else %>
+                  Management Dashboard
+                <% end %>
+              </p>
             </div>
           </div>
         </div>
@@ -60,60 +66,91 @@
               <% end %>
             <% end %>
 
-            <!-- Buildings -->
-            <%= link_to buildings_path, 
-                class: "#{request.path.starts_with?('/buildings') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
-              <svg class="#{request.path.starts_with?('/buildings') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              Buildings
-              <% if request.path.starts_with?('/buildings') %>
-                <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <% if current_user&.resident? %>
+              <!-- Resident Menu Items -->
+              
+              <!-- Mi Información -->
+              <a href="#" class="text-blue-200 hover:bg-blue-700 hover:text-blue-100 group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out">
+                <svg class="text-blue-300 group-hover:text-blue-100 mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-              <% end %>
-            <% end %>
+                Mi Información
+              </a>
 
-            <!-- Apartments -->
-            <%= link_to apartments_path, 
-                class: "#{request.path.starts_with?('/apartments') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
-              <svg class="#{request.path.starts_with?('/apartments') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M9 7l3-3 3 3M4 10h16v11H4V10z" />
-              </svg>
-              Apartments
-              <% if request.path.starts_with?('/apartments') %>
-                <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              <!-- Mis Pagos -->
+              <a href="#" class="text-blue-200 hover:bg-blue-700 hover:text-blue-100 group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out">
+                <svg class="text-blue-300 group-hover:text-blue-100 mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-              <% end %>
-            <% end %>
+                Mis Pagos
+              </a>
 
-            <!-- Residents -->
-            <%= link_to residents_path, 
-                class: "#{request.path.starts_with?('/residents') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
-              <svg class="#{request.path.starts_with?('/residents') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              Residents
-              <% if request.path.starts_with?('/residents') %>
-                <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              <!-- Notificaciones -->
+              <a href="#" class="text-blue-200 hover:bg-blue-700 hover:text-blue-100 group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out">
+                <svg class="text-blue-300 group-hover:text-blue-100 mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 4.828A4 4 0 015.5 4H9l1 1 1-1h3.5a4 4 0 01.672.828M4.828 4.828L4 12l.828 7.172M4.828 4.828A4 4 0 014 8v4m15.172 7.172A4 4 0 0120 16v-4a4 4 0 00-.828-3.172M19.172 19.172L20 12l-.828-7.172M19.172 19.172A4 4 0 0115.5 20H12l-1-1-1 1H6.5a4 4 0 01-3.672-.828" />
                 </svg>
-              <% end %>
-            <% end %>
+                Notificaciones
+              </a>
 
-            <!-- Users -->
-            <% users_active = request.path.starts_with?('/users') && !request.path.starts_with?('/users/sign') %>
-            <%= link_to tenant_users_path, 
-                class: "#{users_active ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
-              <svg class="#{users_active ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              Users
-              <% if users_active %>
-                <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <% else %>
+              <!-- Admin Menu Items -->
+              
+              <!-- Buildings -->
+              <%= link_to buildings_path, 
+                  class: "#{request.path.starts_with?('/buildings') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/buildings') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
+                Buildings
+                <% if request.path.starts_with?('/buildings') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
+
+              <!-- Apartments -->
+              <%= link_to apartments_path, 
+                  class: "#{request.path.starts_with?('/apartments') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/apartments') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M9 7l3-3 3 3M4 10h16v11H4V10z" />
+                </svg>
+                Apartments
+                <% if request.path.starts_with?('/apartments') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
+
+              <!-- Residents -->
+              <%= link_to residents_path, 
+                  class: "#{request.path.starts_with?('/residents') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/residents') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Residents
+                <% if request.path.starts_with?('/residents') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
+
+              <!-- Users -->
+              <% users_active = request.path.starts_with?('/users') && !request.path.starts_with?('/users/sign') %>
+              <%= link_to tenant_users_path, 
+                  class: "#{users_active ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{users_active ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Users
+                <% if users_active %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
               <% end %>
             <% end %>
           </div>
@@ -130,7 +167,7 @@
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-blue-100 truncate">
-                  <%= current_user&.email %>
+                  <%= current_user&.display_name %>
                 </p>
                 <p class="text-xs text-blue-200">
                   <%= current_user&.role&.humanize || 'User' %>

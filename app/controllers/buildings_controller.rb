@@ -68,4 +68,3 @@ class BuildingsController < ApplicationController
     params.expect(building: [ :name, :address, :floors, :description ])
   end
 end
-
