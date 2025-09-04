@@ -4,17 +4,17 @@ class ResidentInvitationsController < ApplicationController
 
   def accept
     if @resident.nil?
-      redirect_to root_path, alert: "Invitación inválida o expirada."
+      redirect_to tenant_root_url(subdomain: request.subdomain), alert: "Invitación inválida o expirada."
       return
     end
 
     if @resident.invitation_accepted?
-      redirect_to root_path, alert: "Esta invitación ya fue aceptada."
+      redirect_to tenant_root_url(subdomain: request.subdomain), alert: "Esta invitación ya fue aceptada."
       return
     end
 
     if @resident.user.present?
-      redirect_to root_path, alert: "Ya tienes una cuenta creada."
+      redirect_to tenant_root_url(subdomain: request.subdomain), alert: "Ya tienes una cuenta creada."
       return
     end
 
@@ -28,7 +28,7 @@ class ResidentInvitationsController < ApplicationController
 
   def create_account
     if @resident.nil?
-      redirect_to root_path, alert: "Invitación inválida o expirada."
+      redirect_to tenant_root_url(subdomain: request.subdomain), alert: "Invitación inválida o expirada."
       return
     end
 
@@ -40,7 +40,7 @@ class ResidentInvitationsController < ApplicationController
     if @user.save
       @resident.update!(invitation_accepted_at: Time.current)
       sign_in(@user)
-      redirect_to dashboard_path, notice: "¡Bienvenido! Tu cuenta ha sido creada exitosamente."
+      redirect_to dashboard_url(subdomain: request.subdomain), notice: "¡Bienvenido! Tu cuenta ha sido creada exitosamente."
     else
       render :accept, status: :unprocessable_entity
     end

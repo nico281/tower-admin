@@ -118,7 +118,7 @@
             </svg>
           </div>
           <%= form.select :role, 
-              options_for_select(User.roles.reject { |k, v| k == 'super_admin' }.map {|key, value| [key.humanize, key]}, user.role), 
+              options_for_select(User.roles.reject { |k, v| k == 'super_admin' || k == 'resident' }.map {|key, value| [key.humanize, key]}, user.role), 
               { prompt: "Select a role" },
               class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" %>
         </div>

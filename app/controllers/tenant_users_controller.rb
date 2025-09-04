@@ -13,7 +13,7 @@ class TenantUsersController < ApplicationController
     })
 
     # For filter dropdowns
-    @roles = User.roles.keys.reject { |role| role == "super_admin" }
+    @roles = User.roles.keys.reject { |role| role == "super_admin" || role == "resident" }
   end
 
   def show
