@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
 
   def index
     @company = ActsAsTenant.current_tenant
-    
+
     if current_user.resident?
       render_resident_dashboard
     else
