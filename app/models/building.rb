@@ -4,6 +4,7 @@ class Building < ApplicationRecord
   belongs_to :company
   has_many :apartments, dependent: :destroy
   has_many :residents, through: :apartments
+  has_many :notifications, as: :target, dependent: :destroy
 
   validates :name, presence: true
 end

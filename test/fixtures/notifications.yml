@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  message: MyText
+  notification_type: 1
+  priority: 1
+  target_type: MyString
+  target_id: 1
+  sender: one
+  company: one
+  sent_at: 2025-09-04 21:36:39
+  read_count: 1
+  total_recipients: 1
+
+two:
+  title: MyString
+  message: MyText
+  notification_type: 1
+  priority: 1
+  target_type: MyString
+  target_id: 1
+  sender: two
+  company: two
+  sent_at: 2025-09-04 21:36:39
+  read_count: 1
+  total_recipients: 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_04_011128) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_05_003649) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,34 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_04_011128) do
     t.datetime "updated_at", null: false
     t.string "domain"
     t.string "subdomain"
+  end
+
+  create_table "notification_recipients", force: :cascade do |t|
+    t.bigint "notification_id", null: false
+    t.bigint "resident_id", null: false
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notification_id"], name: "index_notification_recipients_on_notification_id"
+    t.index ["resident_id"], name: "index_notification_recipients_on_resident_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "title"
+    t.text "message"
+    t.integer "notification_type"
+    t.integer "priority"
+    t.string "target_type"
+    t.integer "target_id"
+    t.bigint "sender_id", null: false
+    t.bigint "company_id", null: false
+    t.datetime "sent_at"
+    t.integer "read_count"
+    t.integer "total_recipients"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_notifications_on_company_id"
+    t.index ["sender_id"], name: "index_notifications_on_sender_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -102,6 +130,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_04_011128) do
   add_foreign_key "apartments", "buildings"
   add_foreign_key "apartments", "companies"
   add_foreign_key "buildings", "companies"
+  add_foreign_key "notification_recipients", "notifications"
+  add_foreign_key "notification_recipients", "residents"
+  add_foreign_key "notifications", "companies"
+  add_foreign_key "notifications", "users", column: "sender_id"
   add_foreign_key "payments", "buildings"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "residents"

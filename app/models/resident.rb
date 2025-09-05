@@ -5,6 +5,8 @@ class Resident < ApplicationRecord
   belongs_to :company
   has_many :payments, dependent: :destroy
   has_one :user, dependent: :destroy
+  has_many :notification_recipients, dependent: :destroy
+  has_many :notifications, through: :notification_recipients
 
   validates :email, presence: true, uniqueness: { scope: :company_id }
   validates :phone, format: { with: /\A[\d\s\+\-\(\)\.]+\z/, message: "must be a valid phone number" }, allow_blank: true
@@ -37,5 +39,9 @@ class Resident < ApplicationRecord
     self.invitation_token = SecureRandom.urlsafe_base64(32)
     self.invited_at = Time.current
     save!
+  end
+  
+  def unread_notifications_count
+    notification_recipients.unread.count
   end
 end

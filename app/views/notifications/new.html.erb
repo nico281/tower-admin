@@ -1,0 +1,334 @@
+<% content_for :title, "Send Notification" %>
+<% content_for :page_title, "Send Notification" %>
+<% content_for :page_description, "Send a notification to residents in specific buildings" %>
+
+<div>
+  <!-- Header with Back Navigation -->
+  <div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+      <%= link_to notifications_path, 
+          class: "inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Notifications
+      <% end %>
+    </div>
+  </div>
+
+  <%= form_with(model: @notification, local: true, class: "max-w-4xl mx-auto", id: "notification_form") do |form| %>
+    <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+      <!-- Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-teal-600">
+        <h2 class="text-xl font-semibold text-white">Create New Notification</h2>
+        <p class="text-blue-100 text-sm mt-1">Send important updates to residents</p>
+      </div>
+
+      <!-- Form Content -->
+      <div class="px-4 sm:px-6 py-6 space-y-6">
+        <% if @notification.errors.any? %>
+          <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">
+                  <%= pluralize(@notification.errors.count, "error") %> prevented this notification from being sent:
+                </h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc list-inside space-y-1">
+                    <% @notification.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Left Column -->
+          <div class="space-y-6">
+            <!-- Title -->
+            <div class="space-y-2">
+              <%= form.label :title, class: "block text-sm font-semibold text-gray-700" %>
+              <%= form.text_field :title, 
+                  class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+                  placeholder: "Enter notification title" %>
+            </div>
+
+            <!-- Target Selection -->
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold text-gray-700">Send To</label>
+              <div class="space-y-3">
+                <label class="flex items-center">
+                  <%= radio_button_tag :target_type, 'all_buildings', true, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
+                  <span class="ml-2 text-sm text-gray-700">All Buildings</span>
+                </label>
+                <label class="flex items-center">
+                  <%= radio_button_tag :target_type, 'building', false, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
+                  <span class="ml-2 text-sm text-gray-700">Specific Building</span>
+                </label>
+                <label class="flex items-center">
+                  <%= radio_button_tag :target_type, 'apartment', false, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
+                  <span class="ml-2 text-sm text-gray-700">Specific Apartment</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Building Selection -->
+            <div class="space-y-2" id="building_selection" style="display: none;">
+              <label class="block text-sm font-semibold text-gray-700">Building</label>
+              <% if @buildings.any? %>
+                <%= select_tag :target_id, 
+                    options_from_collection_for_select(@buildings, :id, :name), 
+                    { prompt: "Select a building", 
+                      id: "building_target_id",
+                      class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } %>
+              <% else %>
+                <div class="block w-full px-3 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500">
+                  No buildings available. Please create buildings first.
+                </div>
+              <% end %>
+            </div>
+
+            <!-- Apartment Selection -->
+            <div class="space-y-2" id="apartment_selection" style="display: none;">
+              <!-- Building Selection for Apartments -->
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Building</label>
+                <% if @buildings.any? %>
+                  <%= select_tag :apartment_building_id, 
+                      options_from_collection_for_select(@buildings, :id, :name), 
+                      { prompt: "First select a building", 
+                        id: "apartment_building_selector",
+                        class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } %>
+                <% else %>
+                  <div class="block w-full px-3 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500">
+                    No buildings available. Please create buildings first.
+                  </div>
+                <% end %>
+              </div>
+              
+              <!-- Apartment Selection within Building -->
+              <div class="space-y-2" id="apartment_list_container" style="display: none;">
+                <label class="block text-sm font-semibold text-gray-700">Apartment</label>
+                <%= select_tag :target_id, 
+                    '<option value="">Select an apartment</option>'.html_safe, 
+                    { id: "apartment_target_id",
+                      class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-6">
+            <!-- Type -->
+            <div class="space-y-2">
+              <%= form.label :notification_type, class: "block text-sm font-semibold text-gray-700" %>
+              <%= form.select :notification_type, 
+                  options_for_select(Notification.notification_types.map {|key, value| [key.humanize, key]}), 
+                  { prompt: "Select notification type" },
+                  class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+            </div>
+
+            <!-- Priority -->
+            <div class="space-y-2">
+              <%= form.label :priority, class: "block text-sm font-semibold text-gray-700" %>
+              <%= form.select :priority, 
+                  options_for_select(Notification.priorities.map {|key, value| [key.humanize, key]}), 
+                  { prompt: "Select priority level" },
+                  class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="space-y-2">
+          <%= form.label :message, class: "block text-sm font-semibold text-gray-700" %>
+          <%= form.text_area :message, 
+              rows: 6,
+              class: "block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out",
+              placeholder: "Enter your notification message here..." %>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <div class="text-sm text-gray-500">
+          The notification will be sent via email to all residents in the selected target
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to "Cancel", notifications_path, 
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+          <%= form.submit "Send Notification", 
+              class: "inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function initializeNotificationForm() {
+  const form = document.getElementById('notification_form');
+  const radios = document.querySelectorAll('input[name="target_type"]');
+  const buildingSelection = document.getElementById('building_selection');
+  const apartmentSelection = document.getElementById('apartment_selection');
+  const apartmentBuildingSelector = document.getElementById('apartment_building_selector');
+  const apartmentListContainer = document.getElementById('apartment_list_container');
+  const apartmentTargetSelect = document.getElementById('apartment_target_id');
+  const buildingTargetSelect = document.getElementById('building_target_id');
+  
+  console.log('Form elements found:', {
+    form: !!form,
+    radios: radios.length,
+    buildingSelection: !!buildingSelection,
+    apartmentSelection: !!apartmentSelection,
+    apartmentBuildingSelector: !!apartmentBuildingSelector,
+    buildingTargetSelect: !!buildingTargetSelect,
+    apartmentTargetSelect: !!apartmentTargetSelect
+  });
+  
+  function handleTargetTypeChange(selectedValue) {
+    console.log('Target type changed to:', selectedValue);
+    
+    // Hide both selections first
+    if (buildingSelection) {
+      buildingSelection.style.display = 'none';
+    }
+    if (apartmentSelection) {
+      apartmentSelection.style.display = 'none';
+    }
+    if (apartmentListContainer) {
+      apartmentListContainer.style.display = 'none';
+    }
+    
+    // Show relevant selection based on radio value
+    if (selectedValue === 'building' && buildingSelection) {
+      buildingSelection.style.display = 'block';
+    } else if (selectedValue === 'apartment' && apartmentSelection) {
+      apartmentSelection.style.display = 'block';
+      // Reset apartment selection when switching to apartment mode
+      if (apartmentTargetSelect) {
+        apartmentTargetSelect.innerHTML = '<option value="">Select an apartment</option>';
+      }
+    }
+  }
+  
+  function loadApartmentsForBuilding(buildingId) {
+    if (!buildingId || !apartmentTargetSelect) {
+      if (apartmentListContainer) {
+        apartmentListContainer.style.display = 'none';
+      }
+      return;
+    }
+    
+    console.log('Loading apartments for building:', buildingId);
+    
+    // Show loading state
+    apartmentTargetSelect.innerHTML = '<option value="">Loading apartments...</option>';
+    apartmentTargetSelect.disabled = true;
+    
+    // Fetch apartments for the selected building
+    fetch(`/notifications/apartments_for_building?building_id=${buildingId}`, {
+      headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.json())
+    .then(apartments => {
+      console.log('Loaded apartments:', apartments);
+      
+      // Clear and populate apartment dropdown
+      apartmentTargetSelect.innerHTML = '<option value="">Select an apartment</option>';
+      
+      if (apartments && apartments.length > 0) {
+        apartments.forEach(apartment => {
+          const option = document.createElement('option');
+          option.value = apartment.id;
+          option.textContent = apartment.name;
+          apartmentTargetSelect.appendChild(option);
+        });
+        apartmentListContainer.style.display = 'block';
+      } else {
+        apartmentTargetSelect.innerHTML = '<option value="">No apartments in this building</option>';
+        apartmentListContainer.style.display = 'block';
+      }
+      
+      apartmentTargetSelect.disabled = false;
+    })
+    .catch(error => {
+      console.error('Error loading apartments:', error);
+      apartmentTargetSelect.innerHTML = '<option value="">Error loading apartments</option>';
+      apartmentTargetSelect.disabled = false;
+      apartmentListContainer.style.display = 'block';
+    });
+  }
+  
+  // Handle radio button changes
+  radios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      handleTargetTypeChange(this.value);
+    });
+  });
+  
+  // Handle building selection for apartment mode
+  if (apartmentBuildingSelector) {
+    apartmentBuildingSelector.addEventListener('change', function() {
+      loadApartmentsForBuilding(this.value);
+    });
+  }
+  
+  // Handle pre-selected radio on page load
+  const checkedRadio = document.querySelector('input[name="target_type"]:checked');
+  if (checkedRadio) {
+    handleTargetTypeChange(checkedRadio.value);
+  }
+  
+  // Handle form submission - disable inactive target_id fields
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      const selectedTargetType = document.querySelector('input[name="target_type"]:checked')?.value;
+      console.log('Form submitting with target type:', selectedTargetType);
+      
+      // Disable target_id fields that are not visible/relevant
+      if (buildingTargetSelect) {
+        if (selectedTargetType === 'building' && buildingSelection.style.display !== 'none') {
+          buildingTargetSelect.disabled = false;
+          console.log('Building target enabled, value:', buildingTargetSelect.value);
+        } else {
+          buildingTargetSelect.disabled = true;
+        }
+      }
+      
+      if (apartmentTargetSelect) {
+        if (selectedTargetType === 'apartment' && apartmentListContainer.style.display !== 'none') {
+          apartmentTargetSelect.disabled = false;
+          console.log('Apartment target enabled, value:', apartmentTargetSelect.value);
+        } else {
+          apartmentTargetSelect.disabled = true;
+        }
+      }
+      
+      // For "all_buildings", both should be disabled
+      if (selectedTargetType === 'all_buildings') {
+        if (buildingTargetSelect) buildingTargetSelect.disabled = true;
+        if (apartmentTargetSelect) apartmentTargetSelect.disabled = true;
+        console.log('All buildings selected - both targets disabled');
+      }
+    });
+  }
+}
+
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', initializeNotificationForm);
+
+// Re-initialize on Turbo navigation
+document.addEventListener('turbo:load', initializeNotificationForm);
+</script>

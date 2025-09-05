@@ -86,12 +86,22 @@
               </a>
 
               <!-- Notificaciones -->
-              <a href="#" class="text-blue-200 hover:bg-blue-700 hover:text-blue-100 group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out">
-                <svg class="text-blue-300 group-hover:text-blue-100 mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <%= link_to resident_notifications_path, 
+                  class: "#{request.path.starts_with?('/my_notifications') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/my_notifications') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 4.828A4 4 0 015.5 4H9l1 1 1-1h3.5a4 4 0 01.672.828M4.828 4.828L4 12l.828 7.172M4.828 4.828A4 4 0 014 8v4m15.172 7.172A4 4 0 0120 16v-4a4 4 0 00-.828-3.172M19.172 19.172L20 12l-.828-7.172M19.172 19.172A4 4 0 0115.5 20H12l-1-1-1 1H6.5a4 4 0 01-3.672-.828" />
                 </svg>
                 Notificaciones
-              </a>
+                <% if current_user&.resident? && current_user.resident.unread_notifications_count > 0 %>
+                  <span class="ml-auto inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-600 text-white">
+                    <%= current_user.resident.unread_notifications_count %>
+                  </span>
+                <% elsif request.path.starts_with?('/my_notifications') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
 
             <% else %>
               <!-- Admin Menu Items -->
@@ -147,6 +157,20 @@
                 </svg>
                 Users
                 <% if users_active %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
+
+              <!-- Notifications -->
+              <%= link_to notifications_path, 
+                  class: "#{request.path.starts_with?('/notifications') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/notifications') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 4.828A4 4 0 015.5 4H9l1 1 1-1h3.5a4 4 0 01.672.828M4.828 4.828L4 12l.828 7.172M4.828 4.828A4 4 0 014 8v4m15.172 7.172A4 4 0 0120 16v-4a4 4 0 00-.828-3.172M19.172 19.172L20 12l-.828-7.172M19.172 19.172A4 4 0 0115.5 20H12l-1-1-1 1H6.5a4 4 0 01-3.672-.828" />
+                </svg>
+                Notifications
+                <% if request.path.starts_with?('/notifications') %>
                   <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= @notification.title %></title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+    <h1 style="color: white; margin: 0; font-size: 24px;"><%= @company.name %></h1>
+    <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0 0;">Building Management Notification</p>
+  </div>
+
+  <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    
+    <!-- Priority Badge -->
+    <div style="margin-bottom: 20px;">
+      <span style="display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; 
+        <% case @notification.priority %>
+        <% when 'urgent' %>
+          background: #fee2e2; color: #dc2626;
+        <% when 'high' %>
+          background: #fef3c7; color: #d97706;
+        <% when 'normal' %>
+          background: #dbeafe; color: #2563eb;
+        <% else %>
+          background: #f3f4f6; color: #6b7280;
+        <% end %>
+        "><%= @notification.priority.humanize %> Priority</span>
+      
+      <span style="display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; background: #f0f9ff; color: #0369a1; margin-left: 10px;"><%= @notification.notification_type.humanize %></span>
+    </div>
+
+    <!-- Notification Content -->
+    <h2 style="color: #1f2937; margin-bottom: 20px; font-size: 20px;"><%= @notification.title %></h2>
+    
+    <div style="background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 25px;">
+      <%= simple_format(@notification.message, style: "margin: 0; color: #374151;") %>
+    </div>
+
+    <!-- Building Info -->
+    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+      <p style="margin: 0; font-size: 14px; color: #64748b;">
+        <strong>Building:</strong> <%= @building.name %><br>
+        <strong>Sent by:</strong> <%= @notification.sender.display_name %><br>
+        <strong>Date:</strong> <%= @notification.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+      </p>
+    </div>
+
+    <!-- Call to Action -->
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="<%= @tracking_url %>" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; font-weight: 600; display: inline-block;">View in Dashboard</a>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 30px;">
+      <p style="font-size: 12px; color: #9ca3af; text-align: center; margin: 0;">
+        This notification was sent to residents of <%= @notification.target_description %> in <%= @company.name %>.<br>
+        You are receiving this because you are a registered resident.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

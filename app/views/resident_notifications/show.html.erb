@@ -1,0 +1,147 @@
+<% content_for :title, @notification.title %>
+<% content_for :page_title, "Notification Details" %>
+<% content_for :page_description, "View notification details and mark as read" %>
+
+<div>
+  <!-- Back button -->
+  <div class="mb-6">
+    <%= link_to resident_notifications_path, class: "inline-flex items-center text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Notifications
+    <% end %>
+  </div>
+
+  <!-- Success Notice -->
+  <% if notice %>
+    <div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-green-800"><%= notice %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Notification Details Card -->
+  <div class="bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+    <div class="p-6 sm:p-8">
+      <!-- Header with status -->
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex-1">
+          <div class="flex items-center space-x-3 mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+              <%= @notification.title %>
+            </h1>
+            <% if @notification_recipient.unread? %>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="8"/>
+                </svg>
+                New
+              </span>
+            <% else %>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Read
+              </span>
+            <% end %>
+          </div>
+
+          <!-- Priority and Type badges -->
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+              <% case @notification.priority %>
+              <% when 'urgent' %>
+                bg-red-100 text-red-800
+              <% when 'high' %>
+                bg-orange-100 text-orange-800
+              <% when 'normal' %>
+                bg-blue-100 text-blue-800
+              <% else %>
+                bg-gray-100 text-gray-800
+              <% end %>
+              ">
+              <%= @notification.priority.humanize %> Priority
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              <%= @notification.notification_type.humanize %>
+            </span>
+          </div>
+
+          <!-- Metadata -->
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-6">
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v1a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2z" />
+              </svg>
+              Sent <%= time_ago_in_words(@notification.created_at) %> ago
+            </div>
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              From <%= @notification.sender.display_name %>
+            </div>
+            <% if @notification_recipient.read? %>
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Read <%= time_ago_in_words(@notification_recipient.read_at) %> ago
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Action button -->
+        <% if @notification_recipient.unread? %>
+          <div class="ml-6">
+            <%= link_to mark_as_read_resident_notification_path(@notification_recipient), method: :patch,
+                class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Mark as Read
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Message content -->
+      <div class="prose max-w-none">
+        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+          <p class="text-gray-900 leading-relaxed whitespace-pre-line text-base">
+            <%= @notification.message %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Target information -->
+      <div class="mt-6 pt-6 border-t border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-3">Sent to:</h3>
+        <div class="flex items-center text-sm text-gray-600">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          <% case @notification.target_type %>
+          <% when 'Company' %>
+            All residents in the building
+          <% when 'Building' %>
+            All residents in <%= @notification.target.name %>
+          <% when 'Apartment' %>
+            Apartment <%= @notification.target.number %> in <%= @notification.target.building.name %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

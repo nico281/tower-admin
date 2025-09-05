@@ -48,6 +48,20 @@ Rails.application.routes.draw do
       get "/:id", to: "tenant_users#show", constraints: { id: /\d+/ }
     end
 
+    # Notifications
+    resources :notifications, only: [:index, :show, :new, :create] do
+      collection do
+        get :apartments_for_building
+      end
+    end
+
+    # Resident notifications
+    resources :resident_notifications, only: [:index, :show], path: "my_notifications" do
+      member do
+        patch :mark_as_read
+      end
+    end
+
     # Dashboard route
     get "dashboard", to: "dashboard#index"
   end
