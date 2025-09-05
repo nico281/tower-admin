@@ -49,14 +49,14 @@ Rails.application.routes.draw do
     end
 
     # Notifications
-    resources :notifications, only: [:index, :show, :new, :create] do
+    resources :notifications, only: [ :index, :show, :new, :create ] do
       collection do
         get :apartments_for_building
       end
     end
 
     # Resident notifications
-    resources :resident_notifications, only: [:index, :show], path: "my_notifications" do
+    resources :resident_notifications, only: [ :index, :show ], path: "my_notifications" do
       member do
         patch :mark_as_read
       end

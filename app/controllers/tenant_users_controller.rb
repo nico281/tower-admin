@@ -6,7 +6,7 @@ class TenantUsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
-    @users = filter_and_paginate(User.where.not(role: ["super_admin", "resident"]), {
+    @users = filter_and_paginate(User.where.not(role: [ "super_admin", "resident" ]), {
       search: { term: params[:search], columns: [ :email ] },
       enums: { role: params[:role] },
       page: params[:page]
@@ -71,7 +71,7 @@ class TenantUsersController < ApplicationController
   private
 
   def set_user
-    @user = User.where.not(role: ["super_admin", "resident"]).find(params.expect(:id))
+    @user = User.where.not(role: [ "super_admin", "resident" ]).find(params.expect(:id))
   end
 
   def user_params

@@ -40,7 +40,7 @@ class Resident < ApplicationRecord
     self.invited_at = Time.current
     save!
   end
-  
+
   def unread_notifications_count
     notification_recipients.unread.count
   end
