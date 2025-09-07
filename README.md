@@ -2,7 +2,7 @@
 
 **Tower Admin** is a comprehensive multi-tenant property management platform built with Ruby on Rails 8.0. Designed for property management companies to efficiently manage their building portfolios, residents, and communications through a modern, intuitive web interface.
 
-[![Ruby Version](https://img.shields.io/badge/ruby-3.3.6-red.svg)](https://www.ruby-lang.org/)
+[![Ruby Version](https://img.shields.io/badge/ruby-3.4.5-red.svg)](https://www.ruby-lang.org/)
 [![Rails Version](https://img.shields.io/badge/rails-8.0.2-red.svg)](https://rubyonrails.org/)
 [![PostgreSQL](https://img.shields.io/badge/postgresql-latest-blue.svg)](https://www.postgresql.org/)
 
@@ -49,7 +49,7 @@
 
 Before setting up Tower Admin, ensure you have the following installed:
 
-- **Ruby 3.3.6** - [Install via RVM](https://rvm.io/) or [rbenv](https://github.com/rbenv/rbenv)
+- **Ruby 3.4.5** - [Install via RVM](https://rvm.io/) or [rbenv](https://github.com/rbenv/rbenv)
 - **Node.js** (Latest LTS) - [Download here](https://nodejs.org/)
 - **PostgreSQL** (13+) - [Installation guide](https://www.postgresql.org/download/)
 - **pnpm** or **Yarn** - JavaScript package manager
