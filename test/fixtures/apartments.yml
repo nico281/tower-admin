@@ -1,11 +1,31 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  number: MyString
-  building: one
-  company: one
+acme_101:
+  number: "101"
+  building: acme_tower
+  company: acme_properties
+  floor: 1
+  bedrooms: 2
+  bathrooms: 2
+  size: 850.0
+  description: "Spacious 2BR/2BA with city views"
 
-two:
-  number: MyString
-  building: two
-  company: two
+acme_201:
+  number: "201"
+  building: acme_tower
+  company: acme_properties
+  floor: 2
+  bedrooms: 1
+  bathrooms: 1
+  size: 650.0
+  description: "Modern 1BR/1BA apartment"
+
+downtown_301:
+  number: "301"
+  building: downtown_plaza
+  company: downtown_management
+  floor: 3
+  bedrooms: 3
+  bathrooms: 2
+  size: 1200.0
+  description: "Luxury 3BR/2BA with balcony"

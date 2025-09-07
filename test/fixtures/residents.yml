@@ -1,13 +1,32 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  email: MyString
-  apartment: one
-  company: one
+acme_resident:
+  first_name: "John"
+  last_name: "Doe"
+  email: "john@example.com"
+  apartment: acme_101
+  company: acme_properties
+  phone: "+1-555-123-4567"
+  date_of_birth: <%= 30.years.ago.to_date %>
+  emergency_contact: "Jane Doe - +1-555-987-6543"
+  notes: "Prefers email communication"
 
-two:
-  name: MyString
-  email: MyString
-  apartment: two
-  company: two
+downtown_resident:
+  first_name: "Sarah"
+  last_name: "Smith"
+  email: "sarah@example.com"
+  apartment: downtown_301
+  company: downtown_management
+  phone: "+1-555-456-7890"
+  date_of_birth: <%= 25.years.ago.to_date %>
+  emergency_contact: "Mike Smith - +1-555-234-5678"
+
+invited_resident:
+  first_name: "Mike"
+  last_name: "Johnson"
+  email: "mike@example.com"
+  apartment: acme_201
+  company: acme_properties
+  phone: "+1-555-789-0123"
+  invited_at: <%= 2.days.ago %>
+  invitation_token: "secure_token_123"

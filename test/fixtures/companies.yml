@@ -1,11 +1,22 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  plan: MyString
-  max_buildings: 1
+acme_properties:
+  name: "ACME Properties"
+  plan: "pro"
+  max_buildings: 10
+  domain: "acme-properties.com"
+  subdomain: "acme"
 
-two:
-  name: MyString
-  plan: MyString
-  max_buildings: 1
+downtown_management:
+  name: "Downtown Management Co."
+  plan: "basic"
+  max_buildings: 5
+  domain: "downtown-mgmt.com" 
+  subdomain: "downtown"
+
+enterprise_corp:
+  name: "Enterprise Property Corp"
+  plan: "entreprise"
+  max_buildings: 50
+  domain: "enterprise-prop.com"
+  subdomain: "enterprise"

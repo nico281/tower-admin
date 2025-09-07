@@ -1,11 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  address: MyString
-  company: one
+acme_tower:
+  name: "ACME Tower"
+  address: "123 Main Street, New York, NY 10001"
+  company: acme_properties
 
-two:
-  name: MyString
-  address: MyString
-  company: two
+downtown_plaza:
+  name: "Downtown Plaza"
+  address: "456 Broadway Ave, Los Angeles, CA 90210"
+  company: downtown_management
+
+enterprise_center:
+  name: "Enterprise Center"
+  address: "789 Business Blvd, Chicago, IL 60601"
+  company: enterprise_corp
