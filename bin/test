@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+# Simple test runner that avoids asset compilation issues
+
+puts "🧪 Tower Admin Test Runner"
+puts "========================="
+
+# Set test environment
+ENV['RAILS_ENV'] = 'test'
+
+# Create test database if it doesn't exist
+puts "\n📊 Setting up test database..."
+system("bin/rails db:test:prepare") || abort("❌ Failed to prepare test database")
+
+# Run different test suites
+test_types = ARGV.empty? ? %w[models controllers system] : ARGV
+
+test_types.each do |test_type|
+  case test_type
+  when 'models', 'model'
+    puts "\n🏗️  Running model tests..."
+    system("bin/rails test test/models") || abort("❌ Model tests failed")
+    
+  when 'controllers', 'controller'
+    puts "\n🎛️  Running controller tests..."
+    system("bin/rails test test/controllers") || abort("❌ Controller tests failed")
+    
+  when 'system'
+    puts "\n🖥️  Running system tests..."
+    puts "   (This may take a while - browser tests are running...)"
+    system("bin/rails test:system") || abort("❌ System tests failed")
+    
+  when 'all'
+    puts "\n🎯 Running all tests..."
+    system("bin/rails test") || abort("❌ Tests failed")
+    
+  when 'lint'
+    puts "\n🔍 Running linters..."
+    puts "   Running RuboCop..."
+    system("bin/rubocop") || abort("❌ RuboCop failed")
+    puts "   Running Brakeman..."
+    system("bin/brakeman --quiet") || abort("❌ Brakeman failed")
+    
+  else
+    puts "❌ Unknown test type: #{test_type}"
+    puts "Available options: models, controllers, system, all, lint"
+    exit 1
+  end
+end
+
+puts "\n✅ All tests passed! 🎉"

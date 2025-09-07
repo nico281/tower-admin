@@ -111,16 +111,28 @@ The application uses PostgreSQL with multiple databases:
 - `tower_admin_production_cable` - WebSocket connections (production)
 
 ### Running Tests
+
+#### Local Development
 ```bash
-# Run the full test suite
-rails test
+# Use the custom test runner (recommended)
+bin/test                    # Run models + controllers + system tests
+bin/test models            # Run model tests only
+bin/test controllers       # Run controller tests only  
+bin/test system           # Run system tests only
+bin/test lint             # Run RuboCop and Brakeman
 
-# Run system tests
-rails test:system
-
-# Run specific test files
-rails test test/models/company_test.rb
+# Standard Rails test commands
+rails test                # Run all unit/integration tests
+rails test:system         # Run system tests (browser-based)
+rails test test/models/company_test.rb  # Run specific test file
 ```
+
+#### CI/CD (GitHub Actions)
+The project includes a comprehensive GitHub Actions workflow that:
+- Runs tests against PostgreSQL
+- Executes model, controller, and system tests
+- Performs code quality checks (RuboCop, Brakeman)
+- Tests against Ruby 3.4.5 and Node.js 20
 
 ### Code Quality Tools
 ```bash

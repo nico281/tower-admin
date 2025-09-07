@@ -1,0 +1,82 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tower_admin_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/tower_admin_test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4.5
+        bundler-cache: true
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'yarn'
+
+    - name: Install JavaScript dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Setup database
+      run: |
+        bin/rails db:create
+        bin/rails db:schema:load
+
+    - name: Run model and controller tests
+      run: |
+        bin/rails test test/models test/controllers
+
+    - name: Precompile assets (for system tests)
+      run: |
+        bin/rails assets:precompile
+
+    - name: Run system tests
+      run: |
+        bin/rails test:system
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4.5
+        bundler-cache: true
+    
+    - name: Run RuboCop
+      run: bundle exec rubocop
+    
+    - name: Run Brakeman
+      run: bundle exec brakeman --quiet --format plain
