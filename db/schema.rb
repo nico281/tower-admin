@@ -139,5 +139,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_003649) do
   add_foreign_key "payments", "residents"
   add_foreign_key "residents", "apartments"
   add_foreign_key "residents", "companies"
+  add_foreign_key "users", "companies", on_delete: :nullify
   add_foreign_key "users", "residents"
 end
