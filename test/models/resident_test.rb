@@ -120,12 +120,12 @@ class ResidentTest < ActiveSupport::TestCase
 
   test "generate_invitation_token! should set token and invited_at" do
     resident = residents(:downtown_resident)
-    
+
     assert_nil resident.invitation_token
     assert_nil resident.invited_at
-    
+
     resident.generate_invitation_token!
-    
+
     assert_not_nil resident.invitation_token
     assert_not_nil resident.invited_at
     assert resident.persisted?
@@ -138,10 +138,10 @@ class ResidentTest < ActiveSupport::TestCase
       apartment: apartments(:downtown_301),
       company: companies(:downtown_management)
     )
-    
+
     resident1.generate_invitation_token!
     resident2.generate_invitation_token!
-    
+
     assert_not_equal resident1.invitation_token, resident2.invitation_token
   end
 end

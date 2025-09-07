@@ -14,7 +14,7 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
-    
+
     def assert_errors_on(model, *attributes)
       model.valid?
       attributes.each do |attribute|
@@ -33,14 +33,14 @@ end
 
 # Configure Capybara for system tests
 class ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
-  
+  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+
   def sign_in_for_system_test(user, subdomain: nil)
     subdomain ||= user.company&.subdomain || "admin"
     host = subdomain == "admin" ? "admin.localhost" : "#{subdomain}.localhost"
-    
+
     visit "http://#{host}:3000"
-    
+
     fill_in "Email", with: user.email
     fill_in "Password", with: "password123"
     click_button "Log in"

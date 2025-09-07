@@ -83,7 +83,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "should validate role inclusion" do
     user = User.new(email: "test@example.com", password: "password123")
-    
+
     user.role = "invalid_role"
     assert_not user.valid?
   end

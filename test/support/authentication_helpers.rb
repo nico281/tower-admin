@@ -1,10 +1,10 @@
 module AuthenticationHelpers
   def sign_in_user(user, subdomain: nil)
     subdomain ||= user.company&.subdomain || "admin"
-    
-    post new_user_session_url(subdomain: subdomain), 
+
+    post new_user_session_url(subdomain: subdomain),
          params: { user: { email: user.email, password: "password123" } }
-    
+
     follow_redirect! if response.redirect?
   end
 
@@ -18,12 +18,12 @@ module AuthenticationHelpers
 
   def sign_in_as_admin(company = :acme_properties)
     user = case company
-           when Symbol
-             users("#{company.to_s}_admin".to_sym)
-           else
+    when Symbol
+             users("#{company}_admin".to_sym)
+    else
              company.users.admin.first
-           end
-    
+    end
+
     sign_in_user(user, subdomain: user.company.subdomain)
   end
 
@@ -40,7 +40,7 @@ module AuthenticationHelpers
   def assert_requires_super_admin(path)
     regular_admin = users(:acme_admin)
     sign_in_user(regular_admin, subdomain: "admin")
-    
+
     get path
     assert_redirected_to new_user_session_url
   end

@@ -9,7 +9,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
   test "should require super admin authentication" do
     sign_out @super_admin
-    
+
     get companies_url(subdomain: "admin")
     assert_redirected_to new_user_session_url
   end
@@ -17,7 +17,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   test "should deny access to non-super-admin" do
     sign_out @super_admin
     sign_in users(:acme_admin)
-    
+
     get companies_url(subdomain: "admin")
     assert_redirected_to new_user_session_url
   end
@@ -36,14 +36,14 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create company with valid params" do
     assert_difference("Company.count") do
-      post companies_url(subdomain: "admin"), params: { 
-        company: { 
-          domain: "new-company.com", 
-          max_buildings: 15, 
-          name: "New Company", 
-          plan: "pro", 
-          subdomain: "newcompany" 
-        } 
+      post companies_url(subdomain: "admin"), params: {
+        company: {
+          domain: "new-company.com",
+          max_buildings: 15,
+          name: "New Company",
+          plan: "pro",
+          subdomain: "newcompany"
+        }
       }
     end
 
@@ -53,14 +53,14 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create company with invalid params" do
     assert_no_difference("Company.count") do
-      post companies_url(subdomain: "admin"), params: { 
-        company: { 
-          domain: "", 
-          max_buildings: 0, 
-          name: "", 
-          plan: "invalid", 
-          subdomain: "" 
-        } 
+      post companies_url(subdomain: "admin"), params: {
+        company: {
+          domain: "",
+          max_buildings: 0,
+          name: "",
+          plan: "invalid",
+          subdomain: ""
+        }
       }
     end
 
@@ -80,13 +80,13 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update company with valid params" do
-    patch company_url(@company, subdomain: "admin"), params: { 
-      company: { 
+    patch company_url(@company, subdomain: "admin"), params: {
+      company: {
         name: "Updated Company Name",
         max_buildings: 20
-      } 
+      }
     }
-    
+
     assert_redirected_to company_url(@company, subdomain: "admin")
     @company.reload
     assert_equal "Updated Company Name", @company.name
@@ -95,14 +95,14 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not update company with invalid params" do
     original_name = @company.name
-    
-    patch company_url(@company, subdomain: "admin"), params: { 
-      company: { 
+
+    patch company_url(@company, subdomain: "admin"), params: {
+      company: {
         name: "",
         plan: "invalid"
-      } 
+      }
     }
-    
+
     assert_response :unprocessable_entity
     @company.reload
     assert_equal original_name, @company.name
@@ -119,7 +119,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   private
 
   def sign_in(user)
-    post new_user_session_url(subdomain: "admin"), 
+    post new_user_session_url(subdomain: "admin"),
          params: { user: { email: user.email, password: "password123" } }
   end
 

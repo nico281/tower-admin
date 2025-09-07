@@ -69,8 +69,8 @@ class CompanyTest < ActiveSupport::TestCase
   test "should destroy dependent users when company is destroyed" do
     user = users(:acme_admin)
     company = user.company
-    
-    assert_difference('User.count', -1) do
+
+    assert_difference("User.count", -1) do
       company.destroy
     end
   end
@@ -78,8 +78,8 @@ class CompanyTest < ActiveSupport::TestCase
   test "should destroy dependent buildings when company is destroyed" do
     building = buildings(:acme_tower)
     company = building.company
-    
-    assert_difference('Building.count', -1) do
+
+    assert_difference("Building.count", -1) do
       company.destroy
     end
   end
@@ -98,7 +98,7 @@ class CompanyTest < ActiveSupport::TestCase
   test "enum should work for plans" do
     assert_equal "pro", @company.plan
     assert @company.pro?
-    
+
     @company.basic!
     assert @company.basic?
     assert_equal "basic", @company.plan

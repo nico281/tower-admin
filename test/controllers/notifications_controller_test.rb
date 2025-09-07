@@ -17,7 +17,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   test "should require admin access" do
     resident_user = users(:acme_resident_user)
     sign_in_user(resident_user, subdomain: "acme")
-    
+
     get notifications_path
     assert_redirected_to tenant_root_path
     assert_equal "Not authorized", flash[:alert]
@@ -25,7 +25,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "admin should get index" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     get notifications_path
     assert_response :success
     assert_select "h1", /Notifications/
@@ -33,7 +33,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "admin should get new notification form" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     get new_notification_path
     assert_response :success
     assert_select "form"
@@ -42,7 +42,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notification with building target" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     assert_difference("Notification.count") do
       post notifications_path, params: {
         notification: {
@@ -65,7 +65,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notification with apartment target" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     assert_difference("Notification.count") do
       post notifications_path, params: {
         notification: {
@@ -73,7 +73,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
           message: "Individual apartment notice",
           notification_type: "general",
           priority: "urgent",
-          target_type: "Apartment", 
+          target_type: "Apartment",
           target_id: @apartment.id
         }
       }
@@ -86,10 +86,10 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notification recipients for building target" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     # Ensure we have residents in this building
     residents_count = @building.apartments.joins(:residents).count
-    
+
     assert_difference("NotificationRecipient.count", residents_count) do
       post notifications_path, params: {
         notification: {
@@ -106,13 +106,13 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notification recipient for apartment target" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     residents_count = @apartment.residents.count
-    
+
     assert_difference("NotificationRecipient.count", residents_count) do
       post notifications_path, params: {
         notification: {
-          title: "Apartment Notice", 
+          title: "Apartment Notice",
           message: "Notice for apartment residents",
           notification_type: "general",
           priority: "normal",
@@ -125,7 +125,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create notification with invalid params" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     assert_no_difference("Notification.count") do
       post notifications_path, params: {
         notification: {
@@ -136,7 +136,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     end
-    
+
     assert_response :unprocessable_entity
   end
 
@@ -151,9 +151,9 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
       target_type: "Building",
       target_id: @building.id
     )
-    
+
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     get notification_path(notification)
     assert_response :success
     assert_select "h1", /Test Notification/
@@ -162,13 +162,13 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should load apartments for building via AJAX" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
-    get apartments_for_building_notifications_path(building_id: @building.id), 
+
+    get apartments_for_building_notifications_path(building_id: @building.id),
         xhr: true
-    
+
     assert_response :success
     assert_equal "application/json", response.media_type
-    
+
     json_response = JSON.parse(response.body)
     assert json_response.is_a?(Array)
     assert json_response.any? { |apt| apt["id"] == @apartment.id }
@@ -176,21 +176,21 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should respect tenant isolation" do
     sign_in_user(@admin_user, subdomain: "acme")
-    
+
     # Try to create notification targeting different company's building
     downtown_building = buildings(:downtown_plaza)
-    
+
     post notifications_path, params: {
       notification: {
         title: "Cross-tenant attempt",
         message: "Should not work",
-        notification_type: "general", 
+        notification_type: "general",
         priority: "normal",
         target_type: "Building",
         target_id: downtown_building.id
       }
     }
-    
+
     # Should either fail or not create notification
     if response.successful?
       notification = Notification.last
@@ -204,7 +204,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   def sign_in_user(user, subdomain: nil)
     subdomain ||= user.company&.subdomain || "admin"
-    post new_user_session_url(subdomain: subdomain), 
+    post new_user_session_url(subdomain: subdomain),
          params: { user: { email: user.email, password: "password123" } }
   end
 end
