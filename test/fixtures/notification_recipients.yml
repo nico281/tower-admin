@@ -2,10 +2,10 @@
 
 one:
   notification: one
-  resident: one
+  resident: acme_resident
   read_at: 2025-09-04 21:36:49
 
 two:
   notification: two
-  resident: two
+  resident: downtown_resident
   read_at: 2025-09-04 21:36:49

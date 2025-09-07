@@ -7,8 +7,8 @@ one:
   priority: 1
   target_type: MyString
   target_id: 1
-  sender: one
-  company: one
+  sender: acme_admin
+  company: acme_properties
   sent_at: 2025-09-04 21:36:39
   read_count: 1
   total_recipients: 1
@@ -20,8 +20,8 @@ two:
   priority: 1
   target_type: MyString
   target_id: 1
-  sender: two
-  company: two
+  sender: downtown_admin
+  company: downtown_management
   sent_at: 2025-09-04 21:36:39
   read_count: 1
   total_recipients: 1

@@ -2,14 +2,14 @@
 
 one:
   amount: 9.99
-  status: 1
-  resident: one
-  building: one
-  company: one
+  payment_status: 1
+  resident: acme_resident
+  building: acme_tower
+  company: acme_properties
 
 two:
   amount: 9.99
-  status: 1
-  resident: two
-  building: two
-  company: two
+  payment_status: 1
+  resident: downtown_resident
+  building: downtown_plaza
+  company: downtown_management
