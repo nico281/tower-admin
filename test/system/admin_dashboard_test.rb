@@ -8,11 +8,12 @@ class AdminDashboardTest < ApplicationSystemTestCase
   end
 
   test "super admin can access admin portal" do
-    visit "http://admin.localhost:3000"
+    Capybara.app_host = "http://admin.example.com"
+    visit new_user_session_path
 
     fill_in "Email", with: @super_admin.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
 
     assert_text "Companies"
     assert_current_path admin_root_path
@@ -36,22 +37,24 @@ class AdminDashboardTest < ApplicationSystemTestCase
   end
 
   test "regular admin cannot access admin portal" do
-    visit "http://admin.localhost:3000"
+    Capybara.app_host = "http://admin.example.com"
+    visit new_user_session_path
 
     fill_in "Email", with: @admin_user.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
 
     assert_text "Access denied"
     assert_current_path new_user_session_path
   end
 
   test "admin can access company dashboard" do
-    visit "http://acme.localhost:3000"
+    Capybara.app_host = "http://acme.example.com"
+    visit new_user_session_path
 
     fill_in "Email", with: @admin_user.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
 
     assert_text "Dashboard"
     assert_text @company.name

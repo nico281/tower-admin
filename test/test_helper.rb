@@ -33,16 +33,18 @@ end
 
 # Configure Capybara for system tests
 class ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
 
   def sign_in_for_system_test(user, subdomain: nil)
     subdomain ||= user.company&.subdomain || "admin"
-    host = subdomain == "admin" ? "admin.localhost" : "#{subdomain}.localhost"
-
-    visit "http://#{host}:3000"
+    
+    # Configure Capybara to use the correct subdomain
+    Capybara.app_host = "http://#{subdomain}.example.com"
+    
+    # Visit the sign-in path directly
+    visit new_user_session_path
 
     fill_in "Email", with: user.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
   end
 end

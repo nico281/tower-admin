@@ -32,11 +32,12 @@ class MultiTenantTest < ApplicationSystemTestCase
 
   test "wrong subdomain redirects to correct tenant" do
     # Try to access ACME subdomain with Downtown admin
-    visit "http://acme.localhost:3000"
+    Capybara.app_host = "http://acme.example.com"
+    visit new_user_session_path
 
     fill_in "Email", with: @downtown_admin.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
 
     # Should be redirected or show error
     assert_no_text "Welcome to ACME Properties"
@@ -45,11 +46,12 @@ class MultiTenantTest < ApplicationSystemTestCase
   test "super admin can access admin portal from any subdomain" do
     super_admin = users(:super_admin)
 
-    visit "http://admin.localhost:3000"
+    Capybara.app_host = "http://admin.example.com"
+    visit new_user_session_path
 
     fill_in "Email", with: super_admin.email
     fill_in "Password", with: "password123"
-    click_button "Log in"
+    click_button "Sign in"
 
     assert_text "Companies"
     assert_current_path admin_root_path

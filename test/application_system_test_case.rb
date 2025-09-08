@@ -1,5 +1,6 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+  # Use rack_test driver which doesn't require browser
+  driven_by :rack_test
 end

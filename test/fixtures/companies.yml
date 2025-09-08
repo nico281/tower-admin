@@ -1,5 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+one:
+  name: "Test Company"
+  plan: "basic"
+  max_buildings: 3
+  domain: "test-company.com"
+  subdomain: "test"
+
 acme_properties:
   name: "ACME Properties"
   plan: "pro"
