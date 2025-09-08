@@ -53,7 +53,7 @@ jobs:
 
     - name: Run model and controller tests
       run: |
-        bin/rails test test/models test/controllers
+        bin/rails test test/models test/controllers test/mailers
 
     - name: Precompile assets (for system tests)
       run: |
