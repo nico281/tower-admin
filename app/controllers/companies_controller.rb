@@ -32,13 +32,20 @@ class CompaniesController < ApplicationController
 
   # POST /companies or /companies.json
   def create
-    @company = Company.new(company_params)
-
+    @company = Company.new
+    
     respond_to do |format|
-      if @company.save
-        format.html { redirect_to @company, notice: "Company was successfully created." }
-        format.json { render :show, status: :created, location: @company }
-      else
+      begin
+        @company.assign_attributes(company_params)
+        if @company.save
+          format.html { redirect_to @company, notice: "Company was successfully created." }
+          format.json { render :show, status: :created, location: @company }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError => e
+        @company.errors.add(:base, e.message)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @company.errors, status: :unprocessable_entity }
       end
@@ -48,10 +55,16 @@ class CompaniesController < ApplicationController
   # PATCH/PUT /companies/1 or /companies/1.json
   def update
     respond_to do |format|
-      if @company.update(company_params)
-        format.html { redirect_to @company, notice: "Company was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @company }
-      else
+      begin
+        if @company.update(company_params)
+          format.html { redirect_to @company, notice: "Company was successfully updated.", status: :see_other }
+          format.json { render :show, status: :ok, location: @company }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_entity }
+        end
+      rescue ArgumentError => e
+        @company.errors.add(:base, e.message)
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @company.errors, status: :unprocessable_entity }
       end

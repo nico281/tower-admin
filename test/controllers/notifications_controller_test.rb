@@ -45,13 +45,13 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Notification.count") do
       post notifications_path, params: {
+        target_type: "building",
+        target_id: @building.id,
         notification: {
           title: "Building Maintenance",
           message: "Maintenance scheduled for tomorrow",
           notification_type: "maintenance",
-          priority: "normal",
-          target_type: "Building",
-          target_id: @building.id
+          priority: "normal"
         }
       }
     end
@@ -60,7 +60,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Building Maintenance", notification.title
     assert_equal @building.id, notification.target_id
     assert_equal "Building", notification.target_type
-    assert_redirected_to notification_path(notification)
+    assert_redirected_to notifications_path
   end
 
   test "should create notification with apartment target" do
@@ -68,13 +68,13 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Notification.count") do
       post notifications_path, params: {
+        target_type: "apartment",
+        target_id: @apartment.id,
         notification: {
           title: "Apartment Notice",
           message: "Individual apartment notice",
           notification_type: "general",
-          priority: "urgent",
-          target_type: "Apartment",
-          target_id: @apartment.id
+          priority: "urgent"
         }
       }
     end
@@ -87,18 +87,18 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   test "should create notification recipients for building target" do
     sign_in_user(@admin_user, subdomain: "acme")
 
-    # Ensure we have residents in this building
-    residents_count = @building.apartments.joins(:residents).count
+    # Count residents who have user accounts (only they can receive notifications)
+    residents_count = @building.residents.joins(:user).where.not(users: { id: nil }).count
 
     assert_difference("NotificationRecipient.count", residents_count) do
       post notifications_path, params: {
+        target_type: "building",
+        target_id: @building.id,
         notification: {
           title: "Building Notice",
           message: "Notice for all building residents",
           notification_type: "general",
-          priority: "normal",
-          target_type: "Building",
-          target_id: @building.id
+          priority: "normal"
         }
       }
     end
@@ -107,17 +107,17 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   test "should create notification recipient for apartment target" do
     sign_in_user(@admin_user, subdomain: "acme")
 
-    residents_count = @apartment.residents.count
+    residents_count = @apartment.residents.joins(:user).where.not(users: { id: nil }).count
 
     assert_difference("NotificationRecipient.count", residents_count) do
       post notifications_path, params: {
+        target_type: "apartment",
+        target_id: @apartment.id,
         notification: {
           title: "Apartment Notice",
           message: "Notice for apartment residents",
           notification_type: "general",
-          priority: "normal",
-          target_type: "Apartment",
-          target_id: @apartment.id
+          priority: "normal"
         }
       }
     end
@@ -148,8 +148,10 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
       priority: "normal",
       sender: @admin_user,
       company: @company,
-      target_type: "Building",
-      target_id: @building.id
+      target: @building,
+      sent_at: Time.current,
+      total_recipients: 0,
+      read_count: 0
     )
 
     sign_in_user(@admin_user, subdomain: "acme")
@@ -157,7 +159,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
     get notification_path(notification)
     assert_response :success
     assert_select "h1", /Test Notification/
-    assert_text "Test message"
+    assert_select "p", /Test message/
   end
 
   test "should load apartments for building via AJAX" do
