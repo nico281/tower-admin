@@ -3,7 +3,7 @@ class NotificationMailer < ApplicationMailer
     @notification = notification
     @recipient = recipient
     @company = notification.company
-    @building = recipient.building
+    @building = recipient.resident&.building
 
     # Create tracking URL for marking as read
     @tracking_url = dashboard_url(

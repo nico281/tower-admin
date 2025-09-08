@@ -37,7 +37,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
     get new_notification_path
     assert_response :success
     assert_select "form"
-    assert_select "select[name='notification[target_type]']"
+    assert_select "input[name='target_type'][type='radio']"
   end
 
   test "should create notification with building target" do

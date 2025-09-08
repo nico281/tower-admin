@@ -2,10 +2,10 @@ require "test_helper"
 
 class ResidentMailerTest < ActionMailer::TestCase
   test "invitation" do
-    mail = ResidentMailer.invitation
-    assert_equal "Invitation", mail.subject
-    assert_equal [ "to@example.org" ], mail.to
-    assert_equal [ "from@example.com" ], mail.from
-    assert_match "Hi", mail.body.encoded
+    resident = residents(:invited_resident)
+    mail = ResidentMailer.invitation(resident)
+    assert_equal "Invitación para acceder al sistema de #{resident.company.name}", mail.subject
+    assert_equal [ resident.email ], mail.to
+    assert_match resident.first_name, mail.body.encoded
   end
 end

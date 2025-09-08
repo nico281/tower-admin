@@ -76,6 +76,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  
+  # For controller testing helpers like assert_template and assigns
+  gem "rails-controller-testing"
 end
 
 gem "tailwindcss-rails", "~> 4.3"

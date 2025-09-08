@@ -4,19 +4,19 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @company = companies(:acme_properties)
     @super_admin = users(:super_admin)
-    sign_in @super_admin
+    sign_in_user @super_admin, subdomain: "admin"
   end
 
   test "should require super admin authentication" do
-    sign_out @super_admin
+    sign_out_user subdomain: "admin"
 
     get companies_url(subdomain: "admin")
     assert_redirected_to new_user_session_url
   end
 
   test "should deny access to non-super-admin" do
-    sign_out @super_admin
-    sign_in users(:acme_admin)
+    sign_out_user subdomain: "admin"
+    sign_in_user users(:acme_admin), subdomain: "admin"
 
     get companies_url(subdomain: "admin")
     assert_redirected_to new_user_session_url
@@ -25,7 +25,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get companies_url(subdomain: "admin")
     assert_response :success
-    assert_select "table"
+    assert_select "div.bg-white.shadow-xl"
   end
 
   test "should get new" do
@@ -70,7 +70,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   test "should show company" do
     get company_url(@company, subdomain: "admin")
     assert_response :success
-    assert_select "h1", /#{@company.name}/
+    assert_select "h2", /#{@company.name}/
   end
 
   test "should get edit" do

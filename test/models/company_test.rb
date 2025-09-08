@@ -42,9 +42,9 @@ class CompanyTest < ActiveSupport::TestCase
   end
 
   test "should require valid plan" do
-    @company.plan = "invalid_plan"
-    assert_not @company.valid?
-    assert_includes @company.errors[:plan], "is not included in the list"
+    assert_raises(ArgumentError) do
+      @company.plan = "invalid_plan"
+    end
   end
 
   test "should require max_buildings to be positive" do
@@ -69,8 +69,9 @@ class CompanyTest < ActiveSupport::TestCase
   test "should destroy dependent users when company is destroyed" do
     user = users(:acme_admin)
     company = user.company
+    expected_user_count = company.users.count
 
-    assert_difference("User.count", -1) do
+    assert_difference("User.count", -expected_user_count) do
       company.destroy
     end
   end

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   acts_as_tenant(:company, optional: true)
   belongs_to :company, optional: true
   belongs_to :resident, optional: true
+  has_many :sent_notifications, class_name: "Notification", foreign_key: "sender_id", dependent: :nullify
   enum :role, [ :super_admin, :admin, :manager, :accountant, :resident ]
 
   # Validation to ensure super_admin users don't have a company

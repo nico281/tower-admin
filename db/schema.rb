@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_05_003649) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_042958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -65,7 +65,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_003649) do
     t.integer "priority"
     t.string "target_type"
     t.integer "target_id"
-    t.bigint "sender_id", null: false
+    t.bigint "sender_id"
     t.bigint "company_id", null: false
     t.datetime "sent_at"
     t.integer "read_count"
@@ -139,6 +139,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_003649) do
   add_foreign_key "payments", "residents"
   add_foreign_key "residents", "apartments"
   add_foreign_key "residents", "companies"
-  add_foreign_key "users", "companies", on_delete: :nullify
   add_foreign_key "users", "residents"
 end

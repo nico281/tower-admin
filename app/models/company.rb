@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :buildings, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   enum :plan, { basic: "basic", pro: "pro", entreprise: "entreprise" }
 

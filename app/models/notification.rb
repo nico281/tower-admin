@@ -1,7 +1,7 @@
 class Notification < ApplicationRecord
   acts_as_tenant(:company)
 
-  belongs_to :sender, class_name: "User"
+  belongs_to :sender, class_name: "User", optional: true
   belongs_to :company
   belongs_to :target, polymorphic: true
 
