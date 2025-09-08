@@ -33,13 +33,12 @@ end
 
 # Configure Capybara for system tests
 class ActionDispatch::SystemTestCase
-
   def sign_in_for_system_test(user, subdomain: nil)
     subdomain ||= user.company&.subdomain || "admin"
-    
+
     # Configure Capybara to use the correct subdomain
     Capybara.app_host = "http://#{subdomain}.example.com"
-    
+
     # Visit the sign-in path directly
     visit new_user_session_path
 
