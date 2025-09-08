@@ -42,7 +42,7 @@ class ResidentInvitationsController < ApplicationController
       sign_in(@user)
       redirect_to dashboard_url(subdomain: request.subdomain), notice: "¡Bienvenido! Tu cuenta ha sido creada exitosamente."
     else
-      render :accept, status: :unprocessable_entity
+      render :accept, status: :unprocessable_content
     end
   end
 

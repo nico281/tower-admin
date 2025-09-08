@@ -64,7 +64,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should show company" do
@@ -103,7 +103,7 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     @company.reload
     assert_equal original_name, @company.name
   end

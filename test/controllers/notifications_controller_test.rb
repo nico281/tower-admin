@@ -137,7 +137,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should show notification" do
@@ -198,7 +198,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
       notification = Notification.last
       assert_not_equal downtown_building.id, notification.target_id
     else
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
     end
   end
 

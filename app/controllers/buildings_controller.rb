@@ -28,8 +28,8 @@ class BuildingsController < ApplicationController
         format.html { redirect_to @building, notice: "Building was successfully created." }
         format.json { render :show, status: :created, location: @building }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @building.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @building.errors, status: :unprocessable_content }
       end
     end
   end
@@ -43,8 +43,8 @@ class BuildingsController < ApplicationController
         format.html { redirect_to @building, notice: "Building was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @building }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @building.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @building.errors, status: :unprocessable_content }
       end
     end
   end

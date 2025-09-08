@@ -63,7 +63,7 @@ class NotificationsController < ApplicationController
       Rails.logger.debug "  notification errors: #{@notification.errors.full_messages}"
       @notification.errors.add(:target, "must be selected") unless target
       load_buildings
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

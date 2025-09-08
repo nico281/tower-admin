@@ -41,13 +41,13 @@ class CompaniesController < ApplicationController
           format.html { redirect_to @company, notice: "Company was successfully created." }
           format.json { render :show, status: :created, location: @company }
         else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.html { render :new, status: :unprocessable_content }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       rescue ArgumentError => e
         @company.errors.add(:base, e.message)
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @company.errors, status: :unprocessable_content }
       end
     end
   end
@@ -60,13 +60,13 @@ class CompaniesController < ApplicationController
           format.html { redirect_to @company, notice: "Company was successfully updated.", status: :see_other }
           format.json { render :show, status: :ok, location: @company }
         else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.html { render :edit, status: :unprocessable_content }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       rescue ArgumentError => e
         @company.errors.add(:base, e.message)
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @company.errors, status: :unprocessable_content }
       end
     end
   end
