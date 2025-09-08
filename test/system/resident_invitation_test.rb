@@ -82,7 +82,7 @@ class ResidentInvitationTest < ApplicationSystemTestCase
 
     visit accept_resident_invitation_path(token: resident.invitation_token)
 
-    # Already accepted invitation redirects to sign-in page  
+    # Already accepted invitation redirects to sign-in page
     assert_current_path new_user_session_path
   end
 end
