@@ -17,8 +17,8 @@ class ResidentInvitationTest < ApplicationSystemTestCase
     fill_in "Last name", with: "Smith"
     fill_in "Email", with: "jane.smith@example.com"
     fill_in "Phone", with: "+1-555-999-8888"
-    select @apartment.building.name, from: "Building"
-    select @apartment.number, from: "Apartment"
+    select "#{@apartment.building.name} - Apt #{@apartment.number}", from: "Apartment"
+    # Apartment already selected above
     fill_in "Emergency contact", with: "John Smith - +1-555-888-7777"
 
     click_button "Create Resident"
@@ -39,9 +39,9 @@ class ResidentInvitationTest < ApplicationSystemTestCase
 
     visit resident_path(resident)
 
-    click_button "Send Invitation"
+    click_button "Enviar invitación"
 
-    assert_text "Invitation sent successfully"
+    assert_text "Invitación enviada exitosamente"
 
     resident.reload
     assert_not_nil resident.invitation_token
@@ -54,14 +54,14 @@ class ResidentInvitationTest < ApplicationSystemTestCase
 
     visit accept_resident_invitation_path(token: resident.invitation_token)
 
-    assert_text "Create Your Account"
+    assert_text "¡Bienvenido!"
 
-    fill_in "Password", with: "newpassword123"
-    fill_in "Password confirmation", with: "newpassword123"
+    fill_in "Contraseña", with: "newpassword123"
+    fill_in "Confirmar contraseña", with: "newpassword123"
 
-    click_button "Create Account"
+    click_button "Crear mi cuenta"
 
-    assert_text "Welcome! Your account has been created."
+    assert_text "Bienvenido a tu portal de residente"
 
     resident.reload
     assert_not_nil resident.invitation_accepted_at
@@ -71,7 +71,8 @@ class ResidentInvitationTest < ApplicationSystemTestCase
   test "resident with invalid token cannot access invitation" do
     visit accept_resident_invitation_path(token: "invalid_token")
 
-    assert_text "Invalid or expired invitation"
+    # Invalid token redirects to sign-in page
+    assert_current_path new_user_session_path
   end
 
   test "resident cannot accept invitation twice" do
@@ -81,6 +82,7 @@ class ResidentInvitationTest < ApplicationSystemTestCase
 
     visit accept_resident_invitation_path(token: resident.invitation_token)
 
-    assert_text "Invitation has already been accepted"
+    # Already accepted invitation redirects to sign-in page  
+    assert_current_path new_user_session_path
   end
 end

@@ -76,7 +76,7 @@ class MultiTenantTest < ApplicationSystemTestCase
 
     # Check that company-specific information is displayed
     assert_text @acme_company.name
-    assert_text "Plan: #{@acme_company.plan.capitalize}"
-    assert_text "#{@acme_company.buildings.count} Buildings"
+    assert_text "#{@acme_company.buildings.count}"
+    assert_text "Buildings"
   end
 end

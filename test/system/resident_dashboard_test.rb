@@ -13,9 +13,9 @@ class ResidentDashboardTest < ApplicationSystemTestCase
 
     visit tenant_root_path
 
-    assert_text "Welcome, #{@resident.display_name}"
+    assert_text "¡Hola, #{@resident.display_name}!"
     assert_text @building.name
-    assert_text "Apartment #{@apartment.number}"
+    assert_text "Apartamento #{@apartment.number}"
   end
 
   test "resident dashboard shows building information" do
@@ -25,9 +25,9 @@ class ResidentDashboardTest < ApplicationSystemTestCase
 
     assert_text @building.name
     assert_text @building.address
-    assert_text "Floor #{@apartment.floor}"
-    assert_text "#{@apartment.bedrooms} bedrooms"
-    assert_text "#{@apartment.bathrooms} bathrooms"
+    assert_text "Piso: #{@apartment.floor}"
+    assert_text "Habitaciones: #{@apartment.bedrooms}"
+    assert_text "Baños: #{@apartment.bathrooms}"
   end
 
   test "resident dashboard shows payment information" do
@@ -35,17 +35,17 @@ class ResidentDashboardTest < ApplicationSystemTestCase
 
     visit tenant_root_path
 
-    assert_text "Recent Payments"
-    assert_text "Pending Payments"
+    assert_text "Pagos Recientes"
+    assert_text "Pagos pendientes"
   end
 
   test "resident can view their notifications" do
     sign_in_for_system_test(@resident_user, subdomain: "acme")
 
-    click_link "My Notifications"
+    click_link "Notificaciones"
 
     assert_current_path resident_notifications_path
-    assert_text "Your Notifications"
+    assert_text "My Notifications"
   end
 
   test "resident can mark notification as read" do
