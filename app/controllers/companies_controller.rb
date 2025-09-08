@@ -33,7 +33,7 @@ class CompaniesController < ApplicationController
   # POST /companies or /companies.json
   def create
     @company = Company.new
-    
+
     respond_to do |format|
       begin
         @company.assign_attributes(company_params)
