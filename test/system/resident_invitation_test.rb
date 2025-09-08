@@ -34,6 +34,8 @@ class ResidentInvitationTest < ApplicationSystemTestCase
 
   test "admin can send invitation to resident" do
     resident = residents(:invited_resident)
+    # Clear any existing invitation to test the flow
+    resident.update!(invited_at: nil, invitation_token: nil)
 
     sign_in_for_system_test(@admin_user, subdomain: "acme")
 

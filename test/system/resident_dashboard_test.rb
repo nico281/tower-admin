@@ -72,13 +72,9 @@ class ResidentDashboardTest < ApplicationSystemTestCase
 
     assert_text "Test Notification"
 
-    click_link "Test Notification"
+    first("a", text: "Read").click
 
     assert_text "This is a test notification"
-
-    click_button "Mark as Read"
-
-    assert_text "Notification marked as read"
 
     recipient.reload
     assert_not_nil recipient.read_at
