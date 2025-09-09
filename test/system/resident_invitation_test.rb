@@ -54,6 +54,9 @@ class ResidentInvitationTest < ApplicationSystemTestCase
     resident = residents(:invited_resident)
     resident.generate_invitation_token!
 
+    # Set the correct subdomain for the resident's company
+    Capybara.app_host = "http://acme.example.com"
+
     visit accept_resident_invitation_path(token: resident.invitation_token)
 
     assert_text "¡Bienvenido!"
@@ -71,6 +74,9 @@ class ResidentInvitationTest < ApplicationSystemTestCase
   end
 
   test "resident with invalid token cannot access invitation" do
+    # Set a valid subdomain context
+    Capybara.app_host = "http://acme.example.com"
+
     visit accept_resident_invitation_path(token: "invalid_token")
 
     # Invalid token redirects to sign-in page
@@ -81,6 +87,9 @@ class ResidentInvitationTest < ApplicationSystemTestCase
     resident = residents(:invited_resident)
     resident.generate_invitation_token!
     resident.update!(invitation_accepted_at: Time.current)
+
+    # Set the correct subdomain for the resident's company
+    Capybara.app_host = "http://acme.example.com"
 
     visit accept_resident_invitation_path(token: resident.invitation_token)
 

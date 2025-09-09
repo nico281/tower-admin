@@ -1,8 +1,8 @@
 # Pagy Configuration
 
-require 'pagy/extras/overflow'
+require "pagy/extras/overflow"
 
-# Default items per page  
+# Default items per page
 Pagy::DEFAULT[:limit] = 2
 
 # Enable overflow handling - when page is out of range

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :skip_tenant_for_super_admin
   allow_browser versions: :modern
   before_action :authenticate_user!
-  
+
   include Pagy::Backend
 
   def skip_tenant_for_super_admin
