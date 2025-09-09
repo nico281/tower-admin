@@ -25,7 +25,7 @@ class ResidentsController < ApplicationController
     end
 
     # Apply pagination
-    @residents = @residents.page(params[:page])
+    @pagy, @residents = pagy(@residents)
 
     # For filter dropdowns
     @apartments = Apartment.includes(:building).all

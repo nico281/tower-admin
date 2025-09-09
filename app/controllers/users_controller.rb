@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   before_action :log_action
 
   def index
-    @users = filter_and_paginate(User.all, {
+    @pagy, @users = filter_and_paginate(User.all, {
       search: { term: params[:search], columns: [ :email ] },
       enums: { role: params[:role] },
       associations: { company_id: params[:company_id] },

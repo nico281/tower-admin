@@ -6,7 +6,7 @@ class BuildingsController < ApplicationController
   before_action :set_building, only: %i[ show edit update destroy ]
 
   def index
-    @buildings = filter_and_paginate(Building.all, {
+    @pagy, @buildings = filter_and_paginate(Building.all, {
       search: { term: params[:search], columns: [ :name, :address ] },
       page: params[:page]
     })

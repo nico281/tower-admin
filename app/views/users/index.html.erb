@@ -173,40 +173,9 @@
         <% end %>
       </div>
       
-      <!-- Pagination -->
-      <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
-        <div class="flex items-center justify-between">
-          <div class="text-sm text-gray-700">
-            Showing <%= @users.offset_value + 1 %>-<%= [@users.offset_value + @users.limit_value, @users.total_count].min %> of <%= @users.total_count %> users
-          </div>
-          <div class="flex items-center space-x-1">
-            <% if @users.prev_page %>
-              <%= link_to "Previous", users_path(search: params[:search], role: params[:role], company_id: params[:company_id], page: @users.prev_page), 
-                  class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
-            <% else %>
-              <span class="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-l-lg cursor-not-allowed">Previous</span>
-            <% end %>
-            
-            <% ([@users.current_page - 2, 1].max..[@users.current_page + 2, @users.total_pages].min).each do |page| %>
-              <% if page == @users.current_page %>
-                <span class="px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-300">
-                  <%= page %>
-                </span>
-              <% else %>
-                <%= link_to page, users_path(search: params[:search], role: params[:role], company_id: params[:company_id], page: page),
-                    class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
-              <% end %>
-            <% end %>
-            
-            <% if @users.next_page %>
-              <%= link_to "Next", users_path(search: params[:search], role: params[:role], company_id: params[:company_id], page: @users.next_page),
-                  class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 transition duration-150 ease-in-out" %>
-            <% else %>
-              <span class="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-r-lg cursor-not-allowed">Next</span>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <%= render 'shared/pagy_pagination', 
+          pagy: @pagy,
+          item_name: "users" %>
     <% else %>
       <!-- Empty State -->
       <div class="p-12 text-center">

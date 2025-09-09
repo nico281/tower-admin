@@ -106,10 +106,8 @@
       </div>
       
       <!-- Pagination -->
-      <%= render 'shared/list_pagination', 
-          collection: @users,
-          path: method(:tenant_users_path),
-          filter_params: { search: params[:search], role: params[:role] },
+      <%= render 'shared/pagy_pagination', 
+          pagy: @pagy,
           item_name: "users" %>
     <% else %>
       <div class="text-center py-12">

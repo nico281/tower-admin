@@ -6,7 +6,7 @@ class ApartmentsController < ApplicationController
   before_action :set_apartment, only: %i[ show edit update destroy ]
 
   def index
-    @apartments = filter_and_paginate(Apartment.includes(:building, :residents), {
+    @pagy, @apartments = filter_and_paginate(Apartment.includes(:building, :residents), {
       search: { term: params[:search], columns: [ :number, :description ] },
       associations: { building_id: params[:building_id] },
       page: params[:page]

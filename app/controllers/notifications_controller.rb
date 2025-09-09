@@ -7,7 +7,7 @@ class NotificationsController < ApplicationController
   before_action :load_buildings, only: [ :new, :create ]
 
   def index
-    @notifications = filter_and_paginate(Notification.recent, {
+    @pagy, @notifications = filter_and_paginate(Notification.recent, {
       search: { term: params[:search], columns: [ :title ] },
       enums: {
         notification_type: params[:notification_type],

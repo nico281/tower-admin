@@ -110,10 +110,8 @@
       </div>
       
       <!-- Pagination -->
-      <%= render 'shared/list_pagination', 
-          collection: @apartments,
-          path: method(:apartments_path),
-          filter_params: { search: params[:search], building_id: params[:building_id] },
+      <%= render 'shared/pagy_pagination', 
+          pagy: @pagy,
           item_name: "apartments" %>
     <% else %>
       <div class="text-center py-12">

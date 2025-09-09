@@ -17,14 +17,14 @@ class ResidentNotificationsController < ApplicationController
       all_recipients = current_user.resident.notification_recipients.joins(:notification).order("notifications.created_at DESC")
       Rails.logger.info "Found #{all_recipients.count} notification recipients"
 
-      @notification_recipients = filter_and_paginate(all_recipients, {
+      @pagy, @notification_recipients = filter_and_paginate(all_recipients, {
         page: params[:page]
       })
 
       # Fallback if filter_and_paginate fails
       if @notification_recipients.nil?
         Rails.logger.warn "filter_and_paginate returned nil, using simple pagination"
-        @notification_recipients = all_recipients.limit(10)
+        @pagy, @notification_recipients = pagy(all_recipients)
       end
 
       Rails.logger.info "After pagination: #{@notification_recipients.count} recipients"

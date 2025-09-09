@@ -7,7 +7,7 @@ class CompaniesController < ApplicationController
 
   # GET /companies or /companies.json
   def index
-    @companies = filter_and_paginate(Company.all, {
+    @pagy, @companies = filter_and_paginate(Company.all, {
       search: { term: params[:search], columns: [ :name, :domain ] },
       enums: { plan: params[:plan] },
       page: params[:page]

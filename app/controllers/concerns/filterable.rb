@@ -31,9 +31,9 @@ module Filterable
   end
 
   # Apply pagination to a collection
-  # Usage: apply_pagination(@users, params[:page], per_page: 10)
-  def apply_pagination(collection, page_param, per_page: 10)
-    collection.page(page_param).per(per_page)
+  # Usage: pagy_obj, records = apply_pagination(@users, params[:page], limit: 10)
+  def apply_pagination(collection, page_param, limit: 10)
+    pagy(collection, page: page_param, limit: limit)
   end
 
   # Complete filtering and pagination workflow
@@ -67,7 +67,7 @@ module Filterable
       end
     end
 
-    # Apply pagination
-    apply_pagination(collection, options[:page], per_page: options[:per_page] || 10)
+    # Apply pagination - Note: This returns [pagy, collection]
+    apply_pagination(collection, options[:page], limit: options[:per_page] || 10)
   end
 end
