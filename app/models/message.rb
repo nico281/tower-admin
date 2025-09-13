@@ -9,6 +9,6 @@ class Message < ApplicationRecord
 
   after_create_commit do
     target_id = ActionView::RecordIdentifier.dom_id(conversation, :messages)
-    broadcast_append_to ["conversation", conversation_id], target: target_id, partial: "messages/message", locals: { message: self }
+    broadcast_append_to [ "conversation", conversation_id ], target: target_id, partial: "messages/message", locals: { message: self }
   end
 end

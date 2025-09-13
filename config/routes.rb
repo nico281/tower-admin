@@ -41,8 +41,8 @@ Rails.application.routes.draw do
     end
 
     # Conversations and messages
-    resources :conversations, only: [:index, :show] do
-      resources :messages, only: [:create]
+    resources :conversations, only: [ :index, :show ] do
+      resources :messages, only: [ :create ]
     end
 
     # User management with custom path to avoid Devise conflicts

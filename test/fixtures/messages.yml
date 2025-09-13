@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+acme_admin_message:
+  company: acme_properties
+  conversation: acme_conversation
+  sender: acme_admin
+  body: "Hello, this is a message from the admin to the resident."
+
+acme_resident_reply:
+  company: acme_properties
+  conversation: acme_conversation
+  sender: acme_resident_user
+  body: "Thank you for your message, I have a question about maintenance."
+
+downtown_admin_message:
+  company: downtown_management
+  conversation: downtown_conversation
+  sender: downtown_admin
+  body: "Welcome to Downtown Plaza! Let us know if you need anything."
