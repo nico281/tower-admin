@@ -1,0 +1,13 @@
+<div class="space-y-3">
+  <% @conversations.each do |conversation| %>
+    <div class="bg-white border rounded-lg p-4 flex items-center justify-between">
+      <div>
+        <div class="font-medium"><%= conversation.resident.display_name %></div>
+        <div class="text-xs text-gray-500"><%= conversation.updated_at ? time_ago_in_words(conversation.updated_at) + ' ago' : 'No messages yet' %></div>
+      </div>
+      <%= link_to "Open", conversation_path(conversation), class: "px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white hover:bg-blue-700" %>
+    </div>
+  <% end %>
+</div>
+
+<%= render partial: 'shared/pagy_pagination', locals: { pagy: @pagy, item_name: 'conversations' } %>

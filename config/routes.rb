@@ -33,7 +33,16 @@ Rails.application.routes.draw do
     resources :residents do
       member do
         post :invite
+        # Ensure a chat conversation exists and redirect to it
+        post :open_chat, to: "conversations#ensure_for_resident"
+        # GET shortcut for opening chat from resident page
+        get :chat, to: "conversations#ensure_for_resident"
       end
+    end
+
+    # Conversations and messages
+    resources :conversations, only: [:index, :show] do
+      resources :messages, only: [:create]
     end
 
     # User management with custom path to avoid Devise conflicts
@@ -61,6 +70,9 @@ Rails.application.routes.draw do
         patch :mark_as_read
       end
     end
+
+    # Resident chat entrypoint (residents use their one conversation)
+    get "my_chat", to: "resident_conversations#show", as: :resident_chat
 
     # Dashboard route
     get "dashboard", to: "dashboard#index"

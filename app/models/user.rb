@@ -21,7 +21,7 @@ class User < ApplicationRecord
     if resident.present?
       resident.display_name
     else
-      email
+      email.split("@").first
     end
   end
 

@@ -10,7 +10,7 @@
 <div class="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50">
   <div class="flex items-center justify-between">
     <div class="text-sm text-gray-700">
-      Showing <%= pagy.from %>-<%= pagy.to %> of <%= pagy.count %> <%= item_name %>
+      Showing <%= pagy.from %>-<%= pagy.to %> of <%= pagy.count %> <%= local_assigns[:item_name] || controller_name || 'items' %>
     </div>
     <div class="flex items-center space-x-1">
       <!-- Debug info -->

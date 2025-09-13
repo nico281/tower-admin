@@ -1,0 +1,4 @@
+<%= turbo_frame_tag dom_id(@conversation, :messages) do %>
+  <%= turbo_stream_from ["conversation", @conversation.id] %>
+  <%= render @messages %>
+<% end %>

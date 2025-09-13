@@ -1,0 +1,11 @@
+<% is_company_sender = message.sender&.resident_id.blank? %>
+<div id="message_<%= message.id %>" class="flex <%= is_company_sender ? 'justify-end' : 'justify-start' %>">
+  <div class="max-w-[75%] px-4 py-2 rounded-xl shadow text-sm <%= is_company_sender ? 'bg-blue-600 text-white rounded-br-sm' : 'bg-gray-100 text-gray-900 rounded-bl-sm' %>
+  ">
+    <div class="opacity-80 text-xs mb-1">
+      <%= message.sender&.display_name || 'Unknown' %>
+      • <%= l(message.created_at, format: :short) %>
+    </div>
+    <div class="whitespace-pre-wrap"><%= message.body %></div>
+  </div>
+</div>

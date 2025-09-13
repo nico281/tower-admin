@@ -68,6 +68,20 @@
 
             <% if current_user&.resident? %>
               <!-- Resident Menu Items -->
+
+              <!-- Mi Chat -->
+              <%= link_to resident_chat_path,
+                  class: "#{request.path.starts_with?('/my_chat') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/my_chat') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m5 8l-4-4H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12z" />
+                </svg>
+                Mi Chat
+                <% if request.path.starts_with?('/my_chat') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
               
               <!-- Mi Información -->
               <a href="#" class="text-blue-200 hover:bg-blue-700 hover:text-blue-100 group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out">
@@ -142,6 +156,20 @@
                 </svg>
                 Residents
                 <% if request.path.starts_with?('/residents') %>
+                  <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                <% end %>
+              <% end %>
+
+              <!-- Conversations -->
+              <%= link_to conversations_path, 
+                  class: "#{request.path.starts_with?('/conversations') ? 'bg-blue-700 text-blue-100' : 'text-blue-200 hover:bg-blue-700 hover:text-blue-100'} group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition duration-150 ease-in-out" do %>
+                <svg class="#{request.path.starts_with?('/conversations') ? 'text-blue-100' : 'text-blue-300 group-hover:text-blue-100'} mr-3 flex-shrink-0 h-5 w-5 transition duration-150 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m5 8l-4-4H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12z" />
+                </svg>
+                Conversations
+                <% if request.path.starts_with?('/conversations') %>
                   <svg class="ml-auto h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>

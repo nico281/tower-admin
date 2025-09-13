@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_042958) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_13_040300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_042958) do
     t.datetime "updated_at", null: false
     t.string "domain"
     t.string "subdomain"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "resident_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id", "resident_id"], name: "index_conversations_on_company_id_and_resident_id", unique: true
+    t.index ["company_id"], name: "index_conversations_on_company_id"
+    t.index ["resident_id"], name: "index_conversations_on_resident_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "conversation_id", null: false
+    t.bigint "sender_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_messages_on_company_id"
+    t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "notification_recipients", force: :cascade do |t|
@@ -130,6 +153,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_042958) do
   add_foreign_key "apartments", "buildings"
   add_foreign_key "apartments", "companies"
   add_foreign_key "buildings", "companies"
+  add_foreign_key "conversations", "companies"
+  add_foreign_key "conversations", "residents"
+  add_foreign_key "messages", "companies"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "notification_recipients", "notifications"
   add_foreign_key "notification_recipients", "residents"
   add_foreign_key "notifications", "companies"
@@ -139,5 +167,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_042958) do
   add_foreign_key "payments", "residents"
   add_foreign_key "residents", "apartments"
   add_foreign_key "residents", "companies"
+  add_foreign_key "users", "companies", on_delete: :nullify
   add_foreign_key "users", "residents"
 end
